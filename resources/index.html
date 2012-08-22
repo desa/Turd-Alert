@@ -5,80 +5,65 @@
     <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
     <title>home page</title>
   </head>
+
   <body>
     <div id="page-wrapper">
-      <div class="rectangle"><div class="rectangle-1"></div>
-<h1 class="heading" id="dom-elem-11">Website</h1>
-<a class="link" id="dom-elem-503">Submit a Story</a>
-<a class="link-1" id="dom-elem-502">Register</a></div>
-<input type="text" value="Search for assholes!" class="textinput" id="dom-elem-1383">
-<div class="rectangle-2"><a class="link-2" id="dom-elem-18">Topic 1</a>
-<a class="link-3" id="dom-elem-122">Topic 2</a>
-<a class="link-4" id="dom-elem-124">Topic 3</a>
-<a class="link-5" id="dom-elem-125">Topic 4</a>
-<a class="link-6" id="dom-elem-18">Topic 1</a>
-<a class="link-7" id="dom-elem-122">Topic 2</a>
-<a class="link-8" id="dom-elem-124">Topic 3</a>
-<a class="link-9" id="dom-elem-125">Topic 4</a></div>
-<div class="text">Topic</div>
-<div class="rectangle-3"></div>
-<input type="text" value="password" class="textinput-1" id="dom-elem-102">
-<input type="text" value="username" class="textinput-2" id="dom-elem-1389">
-<div class="rectangle-4"><div class="text-1">Title Something</div>
-<div class="rectangle-5"></div>
-<p class="paragraph" id="dom-elem-1228">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
-dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
-laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
-nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
-lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
-at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
-eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
-dictumst.&nbsp;</p></div>
-<a href="#" class="basic-ok-button" id="dom-elem-1392"><span>Login</span></a>
-<a class="link-10" id="dom-elem-1391">Forgot your password?</a>
-<div class="rectangle-6"></div>
-<div class="rectangle-7"><div class="text-2">Title Something</div>
-<div class="rectangle-8"></div>
-<p class="paragraph-1" id="dom-elem-1228">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
-dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
-laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
-nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
-lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
-at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
-eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
-dictumst.&nbsp;</p></div>
-<div class="rectangle-9"></div>
-<div class="rectangle-10"></div>
-<div class="rectangle-11"><div class="text-3">Title Something</div>
-<div class="rectangle-12"></div>
-<p class="paragraph-2" id="dom-elem-1228">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
-dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
-laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
-nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
-lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
-at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
-eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
-dictumst.&nbsp;</p></div>
-<div class="rectangle-13"></div>
-<div class="rectangle-14"><div class="text-4">Title Something</div>
-<div class="rectangle-15"></div>
-<p class="paragraph-3" id="dom-elem-1228">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
-dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
-laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
-nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
-lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
-at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
-eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
-dictumst.&nbsp;</p></div>
-<div class="rectangle-16"></div>
+
+      <div class="header" id="homepage-header">
+	<div class="logo" id="logo1"></div>
+	<h1 class="heading" id="name">Website</h1>
+	<a class="button" id="submit-button">Submit a Story</a>
+	<a class="link" id="register-link">Register</a>
+      </div>
+      <div class="container" id="search-login">
+	<input type="text" value="password" class="textinput" id="password-form">
+	<input type="text" value="username" class="textinput" id="username-form">
+	<input type="text" value="Search for assholes!" class="textinput" id="search-form">
+	<a href="#" class="basic-ok-button" id="login-button"><span>Login</span></a>
+	<a class="link" id="forgot-password-link">Forgot your password?</a>
+      </div>
+      <div class="container" id="left-column">      
+	<div class="container" id="topics-container">
+	  <ui class="nav" id="topics">
+	    <li class="topic-link" id="topics-1">Topic 1</li>
+	    <li class="topic-link" id="topics-2">Topic 2</li>
+	    <li class="topic-link" id="topics-3">Topic 3</li>
+	    <li class="topic-link" id="topics-4">Topic 4</li>
+	    <li class="topic-link" id="topics-5">Topic 5</li>
+	    <li class="topic-link" id="topics-6">Topic 6</li>
+	    <li class="topic-link" id="topics-7">Topic 7</li>
+	    <li class="topic-link" id="topics-8">Topic 8</li>
+	  </ui>
+	</div>
+	<div class="add" id="add-left-1"></div>
+	<div class="add" id="add-left-2"></div>
+	<div class="add" id="add-left-2"></div>
+      </div>
+      <div class="content" id="entries">
+	<div class="section-label" id="topic-title">Topic</div>
+	<div class="line" id="topic-title-line"></div>
+	<ui class="entry-list" id="entry">
+	  <li class="entry" is="entry-1">
+	    <div class="entry-title" id="something-title">Title Something</div>
+	    <div class="line" id="line-1"></div>
+	    <p class="entry-text" id="entry-text-1">
+	      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+	      facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
+	      dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
+	      laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
+	      nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
+	      lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
+	      at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
+	      eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
+	      dictumst.&nbsp;
+	    </p>
+	  </li>
+	</ui>
+      </div>
+      <div class="container" id="right-column">
+	<div class="add" id="add-right-1"></div>
+	<div class="add" id="add-right-2"></div>
+      </div>
     </div>
   </body>
 </html>

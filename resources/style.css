@@ -1,4 +1,9 @@
-html, body{margin: 0px;padding: 0px;background-color: #ffffff;} #page-wrapper{
+html, body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #ffffff;
+}
+#page-wrapper {
   position: relative;
   width: 960px;
   /* centers the document */
@@ -10,60 +15,365 @@ html, body{margin: 0px;padding: 0px;background-color: #ffffff;} #page-wrapper{
   overflow: hidden;
   height: 1000px;
 }
-p, h1, h2, h3, h4, h5, h6 {margin: 0;} .rectangle{background: #fbfbfb;border: 1px solid #f0f0f0;width: 960px;height: 50px;border-radius: 0px;position: absolute;top: 0px; left: 0px;}.rectangle-1{background: #000000;border: 1px solid #000000;width: 30px;height: 30px;border-radius: 3px;position: absolute;top: 10px; left: 15px;}
- .heading{width: 105px;height: 30px;border-radius: 0px;padding: 0px;border: none;font-family: helvetica;font-weight: bold;font-size: 20pt;float: none;text-align: left;text-shadow: none;background-color: rgba(0, 0, 0, 0);color: rgb(145, 3, 9);font-style: normal;position: absolute;top: 10px; left: 55px;}
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+.header {
+  background: #fbfbfb;
+  border: 1px solid #f0f0f0;
+  width: 960px;
+  height: 50px;
+  border-radius: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.logo {
+  background: #000000;
+  border: 1px solid #000000;
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+#name {
+  width: 105px;
+  height: 30px;
+  border-radius: 0px;
+  padding: 0px;
+  border: none;
+  font-family: helvetica;
+  font-weight: bold;
+  font-size: 20pt;
+  float: none;
+  text-align: left;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(145, 3, 9);
+  font-style: normal;
+  position: absolute;
+  top: 10px;
+  left: 55px;
+}
 
- .link{width: 85px;height: 15px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 20px; left: 800px;}
+#submit-button {
+  width: 85px;
+  height: 15px;
+  font-family:'Helvetica Neue';
+  font-weight: 300;
+  font-size: 10pt;
+  color: rgb(30, 57, 102);
+  text-decoration: underline;
+  float: none;
+  border-radius: 0px;
+  border: none;
+  text-align: left;
+  line-height: 1.1875;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-style: normal;
+  position: absolute;
+  top: 20px;
+  left: 800px;
+}
+#register-link {
+  width: 50px;
+  height: 15px;
+  font-family:'Helvetica Neue';
+  font-weight: 300;
+  font-size: 10pt;
+  color: rgb(30, 57, 102);
+  text-decoration: underline;
+  float: none;
+  border-radius: 0px;
+  border: none;
+  text-align: left;
+  line-height: 1.1875;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-style: normal;
+  position: absolute;
+  top: 20px;
+  left: 895px;
+}
+#left-column {
+   margin:0px;
+  position: absolute;
+  top: 55px;
+  left: 0px;
+}
 
- .link-1{width: 50px;height: 15px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 20px; left: 895px;}
+#middle-column {
+    margin:0px;
+  position: absolute;
+  top: 55px;
+  left: 110px;
+}
 
- .textinput{width: 247px;height: 18px;padding: 5px 8px;font-size: 10pt;font-family: 'Helvetica Neue';color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);border: 1px solid rgb(191, 191, 191);border-radius: 3px;-webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;font-weight: normal;float: none;text-shadow: none;font-style: normal;position: absolute;top: 60px; left: 680px;}
+#topics-container {
+  background: #fbfbfb;
+  border: 1px solid #f0f0f0;
+  width: 75px;
+  height: 220px;
+  border-radius: 3px;
+  display:block;
+  margin:15px 15px 5px 5px;
+}
+#topics {
+    list-style: none;
+    margin:5px;
+}
+.topic-link {
+    display:block;
+  height: 20px;
+  font-family:'Helvetica Neue';
+  font-weight: 300;
+  font-size: 10pt;
+  color: rgb(30, 57, 102);
+  text-decoration: underline;
+  float: none;
+  border-radius: 0px;
+  border: none;
+  text-align: left;
+  line-height: 1.1875;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-style: normal;
+  position: absolute;
+}
+#add-left-1 {  
+    margin:5px
+    background: #808080;
+    border: 1px solid #000000;
+    width: 90px;
+    height: 275px;
+    border-radius: 3px;
+}
+#add-left-2 {
+  margin:5px;
+  background: #808080;
+  border: 1px solid #000000;
+  width: 90px;
+  height: 150px;
+  border-radius: 3px;
+}
+#add-left-3 {
+  background: #808080;
+  border: 1px solid #000000;
+  width: 90px;
+  height: 150px;
+  border-radius: 3px;
+  margin:5px;
+}
 
-.rectangle-2{background: #fbfbfb;border: 1px solid #f0f0f0;width: 75px;height: 220px;border-radius: 3px;position: absolute;top: 70px; left: 15px;} .link-2{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 5px; left: 5px;}
+#topic-title {
+    padding:0px;
+    text-align:left;
+    margin:5px;
+    color: #000000;
+    font-family:"helvetica neue";
+    font-size: 15pt;
+    font-weight: normal;
+    font-style: normal;
+    border-bottom: 1px solid #808080;
+    height:55px;
+}
+#entries {
+    width:550px;
+    margin:0px;
+    display:block;
+}
+.entry-list {
+}
 
- .link-3{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 25px; left: 5px;}
+.entry-item {
+    display:block;
+  background: #fdfdfd;
+  border: 1px solid #9a9a9a;
+  width: 550px;
+  border-radius: 3px;
+  margin:5px;
+  position:relative;
+}
+.entry-title {
+  color: #030026;
+  font-family:"helvetica neue";
+  font-size: 12pt;
+  font-weight: normal;
+  font-style: normal;
+  text-align: left;
+  position: absolute;
+  top: 5px;
+  padding-left:15px
+  left: 0px;
+  width:550px;
+  height:30px;
+  border-bottom: 1px solid #9a9a9a
 
- .link-4{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 45px; left: 5px;}
+}
+.entry-text {
+  width: 530px;
+  margin:10px;
+  font-family:'Helvetica Neue';
+  padding: 0px;
+  border-radius: 0px;
+  border: none;
+  font-weight: 300;
+  line-height: 1.5;
+  font-size: 10pt;
+  overflow: hidden;
+  float: none;
+  text-align: left;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(33, 63, 115);
+  font-style: normal;
+  position: absolute;
+}
 
- .link-5{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 65px; left: 5px;}
 
- .link-6{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 85px; left: 5px;}
+#right-colum {
+  margin:0px;
+  position: absolute;
+  top: 55px;
+  left: 675px;
+  width:275px;
+}
 
- .link-7{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 105px; left: 5px;}
+#search-login {
+    display:block;
+    margin:5px;
+    width:265px;
+    position:relative;
+}
+#search-form {
+  width: 247px;
+  height: 18px;
+  padding: 5px 8px;
+  font-size: 10pt;
+  font-family:'Helvetica Neue';
+  color: rgb(51, 51, 51);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(191, 191, 191);
+  border-radius: 3px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  font-weight: normal;
+  float: none;
+  text-shadow: none;
+  font-style: normal;
+  position: absolute;
+  top: 5px;
+  left: 0px;
+}
 
- .link-8{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 125px; left: 5px;}
+#login-button {
+  width: 58px;
+  height: 18px;
+  border-radius: 3px;
+  color: rgb(0, 0, 0);
+  font-family:'Helvetica Neue';
+  font-size: 10pt;
+  font-weight: normal;
+  text-decoration: none;
+  display: table;
+  border: 1px solid rgb(192, 192, 192);
+  background-color: rgb(240, 240, 240);
+  float: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background-image: -webkit-linear-gradient(270deg, rgb(240, 240, 240) 0%, rgb(180, 180, 180) 100%);
+  font-style: normal;
+  position: absolute;
+  top: 65px;
+  left: 205px;
+}
+#username-form {
+  width: 112px;
+  height: 18px;
+  padding: 5px 8px;
+  font-size: 10pt;
+  font-family:'Helvetica Neue';
+  color: rgb(51, 51, 51);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(191, 191, 191);
+  border-radius: 3px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  font-weight: normal;
+  float: none;
+  text-shadow: none;
+  font-style: normal;
+  position: absolute;
+  top: 45px;
+  left: 0px;
+}
 
- .link-9{width: 45px;height: 20px;font-family: 'Helvetica Neue';font-weight: 300;font-size: 10pt;color: rgb(30, 57, 102);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 145px; left: 5px;}
+#password-form {
+  width: 112px;
+  height: 18px;
+  padding: 5px 8px;
+  font-size: 10pt;
+  font-family:'Helvetica Neue';
+  color: rgb(51, 51, 51);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(191, 191, 191);
+  border-radius: 3px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+  font-weight: normal;
+  float: none;
+  text-shadow: none;
+  font-style: normal;
+  position: absolute;
+  top: 100px;
+  left: 815px;
+}
 
-.text{color: #000000;font-family: "helvetica neue";font-size: 15pt;font-weight: normal;font-style: normal;text-align: left;position: absolute;top: 70px; left: 115px;}
-.rectangle-3{background: #808080;border: none;width: 550px;height: 1px;border-radius: 0px;position: absolute;top: 90px; left: 115px;}
- .textinput-1{width: 112px;height: 18px;padding: 5px 8px;font-size: 10pt;font-family: 'Helvetica Neue';color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);border: 1px solid rgb(191, 191, 191);border-radius: 3px;-webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;font-weight: normal;float: none;font-style: normal;text-shadow: none;position: absolute;top: 100px; left: 815px;}
+#forgot-password-link {
+  width: 130px;
+  height: 15px;
+  font-family:'Helvetica Neue';
+  font-weight: 200;
+  font-size: 10pt;
+  color: rgb(44, 86, 153);
+  text-decoration: underline;
+  float: none;
+  border-radius: 0px;
+  border: none;
+  text-align: left;
+  line-height: 1.1875;
+  text-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-style: normal;
+  position: absolute;
+  top: 85px;
+  left: 0px;
+}
+#login-button span {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  text-shadow: none;
+}
 
- .textinput-2{width: 112px;height: 18px;padding: 5px 8px;font-size: 10pt;font-family: 'Helvetica Neue';color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);border: 1px solid rgb(191, 191, 191);border-radius: 3px;-webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;font-weight: normal;float: none;text-shadow: none;font-style: normal;position: absolute;top: 100px; left: 680px;}
-
-.rectangle-4{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 177px;border-radius: 3px;position: absolute;top: 100px; left: 115px;}.text-1{color: #030026;font-family: "helvetica neue";font-size: 12pt;font-weight: normal;font-style: normal;text-align: left;position: absolute;top: 5px; left: 15px;}
-.rectangle-5{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 1px;border-radius: 0.5px;position: absolute;top: 26px; left: 0px;}
- .paragraph{width: 530px;height: 140px;font-family: 'Helvetica Neue';padding: 0px;border-radius: 0px;border: none;font-weight: 300;line-height: 1.5;font-size: 10pt;overflow: hidden;float: none;text-align: left;text-shadow: none;background-color: rgba(0, 0, 0, 0);color: rgb(33, 63, 115);font-style: normal;position: absolute;top: 31px; left: 10px;}
-
- .basic-ok-button{width: 58px;height: 18px;border-radius: 3px;color: rgb(0, 0, 0);font-family: 'Helvetica Neue';font-size: 10pt;font-weight: normal;text-decoration: none;display: table;border: 1px solid rgb(192, 192, 192);background-color: rgb(240, 240, 240);float: none;box-shadow: none;-webkit-box-shadow: none;background-image: -webkit-linear-gradient(270deg, rgb(240, 240, 240) 0%, rgb(180, 180, 180) 100%);font-style: normal;position: absolute;top: 135px; left: 885px;}
- .basic-ok-button span{display: table-cell;vertical-align: middle;text-align: center;text-shadow: none;}
-
- .link-10{width: 130px;height: 15px;font-family: 'Helvetica Neue';font-weight: 200;font-size: 10pt;color: rgb(44, 86, 153);text-decoration: underline;float: none;border-radius: 0px;border: none;text-align: left;line-height: 1.1875;text-shadow: none;background-color: rgba(0, 0, 0, 0);font-style: normal;position: absolute;top: 140px; left: 680px;}
-
-.rectangle-6{background: #f0f0f0;border: 1px solid #000000;width: 265px;height: 150px;border-radius: 0px;position: absolute;top: 165px; left: 680px;}
-.rectangle-7{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 177px;border-radius: 3px;position: absolute;top: 287px; left: 115px;}.text-2{color: #030026;font-family: "helvetica neue";font-size: 12pt;font-weight: normal;font-style: normal;text-align: left;position: absolute;top: 5px; left: 15px;}
-.rectangle-8{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 1px;border-radius: 0px;position: absolute;top: 26px; left: 0px;}
- .paragraph-1{width: 530px;height: 140px;font-family: 'Helvetica Neue';padding: 0px;border-radius: 0px;border: none;font-weight: 300;line-height: 1.5;font-size: 10pt;overflow: hidden;float: none;text-align: left;text-shadow: none;background-color: rgba(0, 0, 0, 0);color: rgb(33, 63, 115);font-style: normal;position: absolute;top: 31px; left: 10px;}
-
-.rectangle-9{background: #808080;border: 1px solid #000000;width: 90px;height: 275px;border-radius: 3px;position: absolute;top: 300px; left: 15px;}
-.rectangle-10{background: #e0e0e0;border: 1px solid #000000;width: 265px;height: 500px;border-radius: 0px;position: absolute;top: 325px; left: 680px;}
-.rectangle-11{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 177px;border-radius: 3px;position: absolute;top: 477px; left: 115px;}.text-3{color: #030026;font-family: "helvetica neue";font-size: 12pt;font-weight: normal;font-style: normal;text-align: left;position: absolute;top: 5px; left: 15px;}
-.rectangle-12{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 1px;border-radius: 0px;position: absolute;top: 26px; left: 0px;}
- .paragraph-2{width: 530px;height: 140px;font-family: 'Helvetica Neue';padding: 0px;border-radius: 0px;border: none;font-weight: 300;line-height: 1.5;font-size: 10pt;overflow: hidden;float: none;text-align: left;text-shadow: none;background-color: rgba(0, 0, 0, 0);color: rgb(33, 63, 115);font-style: normal;position: absolute;top: 31px; left: 10px;}
-
-.rectangle-13{background: #808080;border: 1px solid #000000;width: 90px;height: 150px;border-radius: 3px;position: absolute;top: 580px; left: 15px;}
-.rectangle-14{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 177px;border-radius: 3px;position: absolute;top: 667px; left: 115px;}.text-4{color: #030026;font-family: "helvetica neue";font-size: 12pt;font-weight: normal;font-style: normal;text-align: left;position: absolute;top: 5px; left: 15px;}
-.rectangle-15{background: #fdfdfd;border: 1px solid #9a9a9a;width: 550px;height: 1px;border-radius: 0px;position: absolute;top: 26px; left: 0px;}
- .paragraph-3{width: 530px;height: 140px;font-family: 'Helvetica Neue';padding: 0px;border-radius: 0px;border: none;font-weight: 300;line-height: 1.5;font-size: 10pt;overflow: hidden;float: none;text-align: left;text-shadow: none;background-color: rgba(0, 0, 0, 0);color: rgb(33, 63, 115);font-style: normal;position: absolute;top: 31px; left: 10px;}
-
-.rectangle-16{background: #808080;border: 1px solid #000000;width: 90px;height: 150px;border-radius: 3px;position: absolute;top: 735px; left: 15px;}
+#add-right-1 {
+  background: #f0f0f0;
+  border: 1px solid #000000;
+  height: 150px;
+  border-radius: 0px;
+    display:block;
+    margin:5px;
+    width:265px;
+}
+#add-right-2 {
+  background: #f0f0f0;
+  border: 1px solid #000000;
+  height: 500px;
+  border-radius: 0px;
+    display:block;
+    margin:5px;
+    width:265px;
+}
