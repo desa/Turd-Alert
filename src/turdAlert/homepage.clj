@@ -59,8 +59,8 @@ the id of the node argument into the content of the node."
   "take the id and get an add that fits that spot"
   (str "add"))
 
-(defn get-entries [t]
-  "Given topic t, get 10 (or whatever) entries"
+(defn get-entries [t p]
+  "Given topic t, get 10 (or whatever) entries for page p"
   (let [ent test-entry]
     (repeat 10 ent)))
 
@@ -129,7 +129,7 @@ the id of the node argument into the content of the node."
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics]  (make-list (map add-link (get-topics topic page)))
-  [:#entry] (make-list (map format-entry (get-entries topic)))
+  [:#entry] (make-list (map format-entry (get-entries topic page)))
   [:.add] #((content (get-add (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (logged-in-deps (:username session))))
   
