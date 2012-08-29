@@ -1,21 +1,20 @@
 (ns turdAlert.core
    (:require [net.cgrand.enlive-html :as html])
-   (:use [net.cgrand.moustache :only [app]]
+   (:use [turdAlert.homepage :only [logged-in not-logged-in]]
+         [ net.cgrand.moustache :only [app]]
          [ring.adapter.jetty :only [run-jetty]]
         [ring.util.response :only [response file-response]]
         [ring.middleware.reload :only [wrap-reload]]
         [ring.middleware.file :only [wrap-file]]
-        [ring.middleware.stacktrace :only [wrap-stacktrace]]))
+        [ring.middleware.stacktrace :only [wrap-stacktrace]]
+        [ring.middleware.session :only [wrap-session]]
+        [ring.middleware.cookies :only [wrap-cookies]]
+        [ring.middleware.params :only [wrap-params]]
+        [ring.middleware.session.store :only [delete-session write-session read-session]]))
 
 
-(defn pwd
-  "Returns current working directory as a String.  (Like UNIX 'pwd'.)
-  Note: In Java, you cannot change the current working directory."
-  []
-  (System/getProperty "user.dir"))
 
-
-(def *webdir* (str (pwd) "/src/turdAlert/"))
+(def  *webdir* (str (System/getProperty "user.dir") "/src/turdAlert/"))
 
 (defn render [t]
   (apply str t))
@@ -37,8 +36,12 @@
 (defn serve-file [filename]
   (file-response
    {:root *webdir*
-    :index-files? true
     :html-files? true}))
+
+;; ===========================================
+;; The Server: calling serve-app runs Jetty with
+;; the app provided
+;; ===========================================
 
 (defn app* [app & {:keys [port] :or {port 8080}}]
   (let [nses (if-let [m (meta app)]
@@ -47,12 +50,62 @@
     (run-jetty
      (-> app
          (wrap-file *webdir*)
+         (wrap-session)
+         (wrap-cookies)
+         (wrap-params)
          (wrap-reload nses)
          (wrap-stacktrace))
      {:port (Integer. port)})))
 
-(defmacro serve-app [app]
-  `(app* (var ~app)))
+(defmacro serve-app
+  ([app] `(app* (var ~app)))
+  ([app port] `(app* (var ~app) :port ~port)))
+
+
+;; ===========================================
+;; Routes: the handler for the all the routes
+;; ===========================================
+
+(defn index [{:keys [topic]}]
+  (fn [req]
+    (if-let [sess (:session req)]
+      (render-to-response (logged-in {:session sess :topic topic}))
+      (render-to-response (not-logged-in {:topic topic})))))
+
+(def routes
+  (app
+   [] (index {})
+   ["topic" topic]  (index {:topic topic})
+   [&]   page-not-found))
+
+(def post-handler
+  (app
+   [sign-in] sign-in
+   [search] #(index {:topic ))
+;{username :username count :count userid :userid :as session} :session
+(defn sign-in [{{username "username"  password "password" :as params} :params :as req}]
+  (if-let [userid (user? username password)]
+    (index (assoc req :session {:username username :count 0 :userid userid}))))
+
+;; ===========================================
+;; The Server and Main
+;; ===========================================
+
+(def main-app
+  (app
+   :get routes
+   :post post-handler))
+
+
+(defn -main [port]
+  (serve-app main-app port))
+
+(defonce *server* (serve-app main-app))
+
+;; ===========================================
+;; Helper Functions
+;; ===========================================
+
 
 (defmulti parse-int type)
 (defmethod parse-int java.lang.Integer [n] n)
@@ -71,15 +124,4 @@
     (str astr)
     (str astr "s")))
 
-
-
-(def routes
-  (app
-      [""]  (fn [req] (render-to-response "Hello, there"))
-      [&]   page-not-found))
-
-(defn -main [port]
-  (serve-app routes))
-
-(defonce *server* (serve-app routes))
 

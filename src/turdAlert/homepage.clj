@@ -1,9 +1,11 @@
 (ns turdAlert.homepage
   (:use [net.cgrand.enlive-html
-         :only [deftemplate defsnippet content clone-for nth-child snippet* transformation
+         :only [id= select deftemplate defsnippet content clone-for nth-child snippet* transformation
                 nth-of-type first-child do-> set-attr sniptest at emit* wrap append]]))
 
-
+;; =============================================
+;; Helper functions for the templates
+;; =============================================
 
 (defn add-link [item]
   "puts links around the items of the list items,
@@ -18,7 +20,7 @@
   #((append ((wrap :li {:id (format "%s_%d"
                                 (get (:attrs %) :id "list_item")
                                  (inc (count (:content %))))
-                        :class "list_item"}) item)) %))
+                        :class (format "%s-item" (get (:attrs %) :id "list"))}) item)) %))
 
 (defn make-list [items]
   "Returns function that adds all the items as :li elements to the node argument."
@@ -27,23 +29,45 @@
                (map #(add-list-item %) items))))
 
 
-(def topic1 {:href "#" :link "topic"})
+(defn merge-node [src]
+  "Returns function that puts the content of nodes from the src nodes that match
+the id of the node argument into the content of the node."
+  (fn [nd]
+    (let [{ {id :id} :attrs, cont :content, :as node} nd]
+      ((content  (get-in (first (select src [(id= id)])) [:content])) node))))
 
-(defn make-add []
-  (content "add"))
+;; ============================================
+;; Functions to get certain data or check data.
+;; ============================================
 
-(defn format-entry [node entry]
-  ((snippet* node  [{:keys [title text submitted-by date location up-votes down-votes]}]
-            [:.entry-title] (do->
-                         (set-attr :id (format "%s-title" title))
-                         (content title))
-        [:.entry-text] (content text)
-        [:.entry-infos] (content (map #((wrap :span {:id  (key %)})  (val %))
-                                      {:submitted-by (format "from %s" submitted-by)
-                                       :date date
-                                       :location (format "at %s" location)
-                                       :up-votes (format "%s up" up-votes)
-                                       :down-votes (format "%s down" down-votes)}))) entry))
+(defn get-add [id]
+  "take the id and get an add that fits that spot"
+  (str "add"))
+
+(defn get-entries [t]
+  "Given topic t, get 10 (or whatever) entries"
+  (let [ent (first (format-entry  test-entry))]
+    (repeat 10 ent)))
+
+(defn get-topics [t]
+  "Given topic t, get other topics"
+  (repeat 8 topic1))
+
+(defn makeUri [usr]
+  "given user usr, make uri for their profile."
+  (str usr))
+
+(defn open-reg-form []
+  "open registration form"
+  (str "HI"))
+
+(defn passwordFormat?
+  "is password s in correct format? If no, put popup to notify them"
+  [s] "")
+
+;; ============================================
+;; test data
+;; ============================================
 
 (def test-entry  {:title "title"
              :text "text"
@@ -51,35 +75,62 @@
              :date "8/31/12 at 3:30pm"
              :location "Los Angeles, CA"
              :up-votes 12343
-             :down-votes 31})
+                  :down-votes 31})
 
-(defn getUser [s] (str "User" "-Me"))
-(defn get-entries2 [u n]
-  [format-entry (first (:content n)) test-entry])
-(defn get-entries [u n]
-  ["hi" "hello"])
-(defn get-topics [t]
-  (repeat 8 topic1))
+(def topic1 {:href "#" :link "topic"})
 
+;; ============================================
+;; Snippets
+;; ============================================
+
+(defsnippet format-entry "turdAlert/resources/entry.html" [:#entry] 
+  [{:keys [title text submitted-by date location up-votes down-votes]}]
+  [:.entry-title] (do->
+                   (set-attr :id (format "%s-title" title))
+                   (content title))
+  [:.entry-text] (content text)
+  [:.entry-infos] (content (map #((wrap :span {:id  (key %)})  (val %))
+                                {:submitted-by (format "from %s" submitted-by)
+                                 :date date
+                                 :location (format "at %s" location)
+                                 :up-votes (format "%s up" up-votes)
+                                 :down-votes (format "%s down" down-votes)})))
+
+(defsnippet logged-in-deps "turdAlert/resources/log-deps.html" [:.logged-in]
+  [username]
+  [:a#settings-link] (set-attr :href (makeUri username))
+  [:#user] (content (str username))
+  [:input.hidden-input] (set-attr :value (format "%s" username)))
+
+(defsnippet not-logged-in-deps "turdAlert/resources/log-deps.html" [:.not-logged-in]
+  []
+  [:#register-button] (set-attr :onClick (open-reg-form))
+  [:#sign-in-form] (set-attr :action "")
+  [:#password-form] #((set-attr :onBlur (passwordFormat? (get-in % [:attrs :value]))) %)
+  [:#forgot-password-button] (set-attr :action ""))
+
+;; ============================================
+;; Templates
+;; ============================================
 
 (deftemplate not-logged-in  "turdAlert/resources/index.html"
   [{:keys [session topic]  :or {topic "Top Turds"}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics] (make-list (map add-link (get-topics topic)))
-  [:#entry] #(make-list (get-entries topic %))
-  [:.add] (make-add)
-  [:.logged-in] (content ""))
+  [:#entry] (make-list (get-entries topic))
+  [:.add] #((content (get-add (get-in % [:attrs :id]))) %))
+  [:.log-dep] (merge-node (not-logged-in-deps)))
 
 (deftemplate logged-in  "turdAlert/resources/index.html"
   [{:keys [session topic]  :or {topic "Top Turds"}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics] (make-list (get-topics topic))
-  [:#entry] #(make-list (get-entries topic %))
-  [:.add] (make-add)
-  [:.not-logged-in] (content "")
-  [:#user](content (getUser session)))
+  [:#entry] (make-list (get-entries topic))
+  [:.add] #((content (get-add (get-in % [:attrs :id]))) %))
+  [:.log-dep] (merge-node (logged-in-deps (:username session))) )
+  
 
 
 

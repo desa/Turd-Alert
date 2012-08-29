@@ -3,4 +3,5 @@
                  [ring "1.1.2"]
                  [net.cgrand/moustache "1.1.0"]
                  [enlive "1.0.1"]]
-  :plugins [[lein-swank "1.4.4"]])
+  :plugins [[lein-swank "1.4.4"]]
+  :source-path "src")
