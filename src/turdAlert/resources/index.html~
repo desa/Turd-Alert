@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link href="resources/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="resources/jquery.js"></script>
+    <title>home page</title>
+  </head>
+
+  <body>
+    <div id="page-wrapper">
+      <div class="header" id="homepage-header">
+	<div class="logo" id="logo1"></div>
+	<h1 class="heading" id="name">Turd Alert</h1>
+	<p class="button" id="submit-button"><a href="#">Submit a Story</a></p>
+	<div class="not-logged-in" id="reg-settings">
+	  <p class="reg-settings-button" id="register-button">Register</p>
+	</div>
+	<div class="logged-in" id="reg-settings">
+	  <a class="reg-settings-button" id="settings-link" href="#">Settings</a>
+	</div>
+      </div>
+      <div class="content"> 
+	<div class="container" id="left-column">      
+	  <div class="container" id="topics-container">
+	    <ui class="nav" id="topics">
+	      <li id="topics_1">topics</li>
+	    </ui>
+	  </div>
+	  <div class="add-spot" id="left-adds">
+	    <div class="add" id="add-left-1"></div>
+	    <div class="add" id="add-left-2"></div>
+	    <div class="add" id="add-left-3"></div>
+	  </div>
+	</div>
+	<div class="container" id="middle-column">
+	  <div class="section-label" id="topic-name">Topic</div>
+	  <ui class="entry-list" id="entry">
+	    	  <li class="entry-item" id="entry-1">
+	    <div class="entry-title" id="something-title">Title Something</div>
+	    <p class="entry-text" id="entry-text-1">
+	      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+	      facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
+	      dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
+	      laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
+	      nunc. Aenean nec molestie nibh. Aliquam dolor enim, consequat vitae
+	      lobortis posuere, convallis eleifend lorem. Donec ipsum velit, venenatis
+	      at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
+	      eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
+	      dictumst.&nbsp;
+	      <div class="entry-infos" id="entry-info1">
+		<span class="entry-info" id="submitted-by">user or anon</span>
+		<span class="entry-info" id="date">8/22/12 4:34pm</span>
+		<span class="entry-info" id="location"> in Los Angeles, CA</span>
+		<span class="entry-info" id="up-votes">123231</span>
+		<span class="entry-info" id="down-votes">243</span>
+	      </div>
+	    </p>
+	  </li>
+	  </ui>
+	</div>
+	<div class="container" id="right-column">
+	  <div class="container" id="search-login">
+	    <form method="post" action="#">
+	      <input name="search" type="text" class="textinput" id="search-form" 
+		     value="Search for assholes!">
+	    </form>
+	    <div id="login-logout">
+	      <form method="post" action="#" class="not-logged-in" id="sign-in-form">
+		<div class="signform-welcome">
+		  <input name="username" type="text" value="Username"
+			 class="textinput" id="username-form">
+		  <input name="password" type="text" value="Password" 
+			 class="textinput" id="password-form">
+		</div>
+		<div class="forgot-login">
+		  <p class="forgot-welcome" id="forgot-password-button">
+		    Forgot your password?
+		  </p>
+		  <input type="submit" value="Log in" class="log-button" id="login-button">
+		</div>
+	      </form>
+	      <div class="forgot-welcome">
+		<form method="post" action="#" class="logged-in" id="logout-form">
+		  <div class="forgot-welcome" id="welcome-message">
+		    Welcome <span id="user">User</span>!
+		  </div>
+		  <input type="submit" value="Log out" class="log-button" id="logout-button">
+		</form>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="add-spot" id="right-adds">
+	    <div class="add" id="add-right-1"></div>
+	    <div class="add" id="add-right-2"></div>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function capitalize (text) {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    };
+
+    $(".textinput").click(function () {
+    var type = $(this).attr("name").toLowerCase();
+    var value = $(this).val();
+    var def = ""
+    switch (type) {
+    case "search": 
+    def = "Search for assholes!";
+    break;
+    case "username":
+    def = "Username";
+    break;
+    case "password":
+    def = "Password";
+    break;
+    default:
+    break;
+    }
+    if (value == def) {
+    $(this).val("");
+    }
+    });
+
+    $(".textinput").blur(function () {
+    var type = $(this).attr("name").toLowerCase();
+    var value = "";
+    switch (type) {
+    case "search": 
+    value = "Search for assholes!";
+    break;
+    case "username":
+    value = "Username";
+    break;
+    case "password":
+    value = "Password";
+    break;
+    default:
+    break;
+    }
+    if ($(this).val() == "") {
+    $(this).val(value);
+    }
+    });
+  </script>
+
+</html>
