@@ -14,7 +14,7 @@
 
 
 
-(def  *webdir* (str (System/getProperty "user.dir") "/src/turdAlert/"))
+(def  *webdir* (str (System/getProperty "user.dir") "/resources/"))
 
 (defn render [t]
   (apply str t))
@@ -37,6 +37,8 @@
   (file-response
    {:root *webdir*
     :html-files? true}))
+
+(defn user? [u] true)
 
 ;; ===========================================
 ;; The Server: calling serve-app runs Jetty with
@@ -66,22 +68,24 @@
 ;; Routes: the handler for the all the routes
 ;; ===========================================
 
-(defn index [{:keys [topic]}]
+(defn index [{:keys [topic page]}]
   (fn [req]
     (if-let [sess (:session req)]
-      (render-to-response (logged-in {:session sess :topic topic}))
-      (render-to-response (not-logged-in {:topic topic})))))
+      (render-to-response (logged-in {:session sess :topic topic :page page}))
+      (render-to-response (not-logged-in {:topic topic :page page})))))
 
 (def routes
   (app
    [] (index {})
-   ["topic" topic]  (index {:topic topic})
+   ["topic" topic]  (index {:topic topic :page 1})
+   ["topic" topic "page=" page] (index {:topic topic :page page})
    [&]   page-not-found))
 
 (def post-handler
   (app
    [sign-in] sign-in
-   [search] #(index {:topic ))
+   [search] #(index {:topic "search"})))
+
 ;{username :username count :count userid :userid :as session} :session
 (defn sign-in [{{username "username"  password "password" :as params} :params :as req}]
   (if-let [userid (user? username password)]

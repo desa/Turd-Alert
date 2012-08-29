@@ -3,6 +3,21 @@
          :only [id= select deftemplate defsnippet content clone-for nth-child snippet* transformation
                 nth-of-type first-child do-> set-attr sniptest at emit* wrap append]]))
 
+;; ============================================
+;; test data
+;; ============================================
+
+(def test-entry  {:title "title"
+             :text "text"
+             :submitted-by "anon"
+             :date "8/31/12 at 3:30pm"
+             :location "Los Angeles, CA"
+             :up-votes 12343
+                  :down-votes 31})
+
+(def topic1 {:href "#" :link "topic"})
+
+
 ;; =============================================
 ;; Helper functions for the templates
 ;; =============================================
@@ -46,11 +61,11 @@ the id of the node argument into the content of the node."
 
 (defn get-entries [t]
   "Given topic t, get 10 (or whatever) entries"
-  (let [ent (first (format-entry  test-entry))]
+  (let [ent test-entry]
     (repeat 10 ent)))
 
-(defn get-topics [t]
-  "Given topic t, get other topics"
+(defn get-topics [t p]
+  "Given topic t, get other topics for page p"
   (repeat 8 topic1))
 
 (defn makeUri [usr]
@@ -65,25 +80,12 @@ the id of the node argument into the content of the node."
   "is password s in correct format? If no, put popup to notify them"
   [s] "")
 
-;; ============================================
-;; test data
-;; ============================================
-
-(def test-entry  {:title "title"
-             :text "text"
-             :submitted-by "anon"
-             :date "8/31/12 at 3:30pm"
-             :location "Los Angeles, CA"
-             :up-votes 12343
-                  :down-votes 31})
-
-(def topic1 {:href "#" :link "topic"})
 
 ;; ============================================
 ;; Snippets
 ;; ============================================
 
-(defsnippet format-entry "turdAlert/resources/entry.html" [:#entry] 
+(defsnippet format-entry "resources/entry.html" [:#entry] 
   [{:keys [title text submitted-by date location up-votes down-votes]}]
   [:.entry-title] (do->
                    (set-attr :id (format "%s-title" title))
@@ -96,13 +98,13 @@ the id of the node argument into the content of the node."
                                  :up-votes (format "%s up" up-votes)
                                  :down-votes (format "%s down" down-votes)})))
 
-(defsnippet logged-in-deps "turdAlert/resources/log-deps.html" [:.logged-in]
+(defsnippet logged-in-deps "resources/log-deps.html" [:.logged-in]
   [username]
   [:a#settings-link] (set-attr :href (makeUri username))
   [:#user] (content (str username))
   [:input.hidden-input] (set-attr :value (format "%s" username)))
 
-(defsnippet not-logged-in-deps "turdAlert/resources/log-deps.html" [:.not-logged-in]
+(defsnippet not-logged-in-deps "resources/log-deps.html" [:.not-logged-in]
   []
   [:#register-button] (set-attr :onClick (open-reg-form))
   [:#sign-in-form] (set-attr :action "")
@@ -113,23 +115,23 @@ the id of the node argument into the content of the node."
 ;; Templates
 ;; ============================================
 
-(deftemplate not-logged-in  "turdAlert/resources/index.html"
-  [{:keys [session topic]  :or {topic "Top Turds"}}]
+(deftemplate not-logged-in  "resources/index.html"
+  [{:keys [session topic page]  :or {topic "Top Turds"}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
-  [:#topics] (make-list (map add-link (get-topics topic)))
+  [:#topics] (make-list (map add-link (get-topics topic page)))
   [:#entry] (make-list (get-entries topic))
-  [:.add] #((content (get-add (get-in % [:attrs :id]))) %))
+  [:.add] #((content (get-add (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (not-logged-in-deps)))
 
-(deftemplate logged-in  "turdAlert/resources/index.html"
-  [{:keys [session topic]  :or {topic "Top Turds"}}]
+(deftemplate logged-in  "resources/index.html"
+  [{:keys [session topic page]  :or {topic "Top Turds"}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
-  [:#topics] (make-list (get-topics topic))
-  [:#entry] (make-list (get-entries topic))
-  [:.add] #((content (get-add (get-in % [:attrs :id]))) %))
-  [:.log-dep] (merge-node (logged-in-deps (:username session))) )
+  [:#topics]  (make-list (map add-link (get-topics topic page)))
+  [:#entry] (make-list (map format-entry (get-entries topic)))
+  [:.add] #((content (get-add (get-in % [:attrs :id]))) %)
+  [:.log-dep] (merge-node (logged-in-deps (:username session))))
   
 
 
