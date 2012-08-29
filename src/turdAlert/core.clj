@@ -52,7 +52,7 @@
     (run-jetty
      (-> app
          (wrap-file *webdir*)
-         (wrap-session)
+         (wrap-session {:cookie-name "Turd Alert"})
          (wrap-cookies)
          (wrap-params)
          (wrap-reload nses)
@@ -62,7 +62,6 @@
 (defmacro serve-app
   ([app] `(app* (var ~app)))
   ([app port] `(app* (var ~app) :port ~port)))
-
 
 ;; ===========================================
 ;; Routes: the handler for the all the routes
@@ -81,15 +80,17 @@
    ["topic" topic "page=" page] (index {:topic topic :page page})
    [&]   page-not-found))
 
-(def post-handler
-  (app
-   [sign-in] sign-in
-   [search] #(index {:topic "search"})))
-
-;{username :username count :count userid :userid :as session} :session
 (defn sign-in [{{username "username"  password "password" :as params} :params :as req}]
   (if-let [userid (user? username password)]
     (index (assoc req :session {:username username :count 0 :userid userid}))))
+
+(def post-handler
+  (app
+   ["sign-in"] #(sign-in %)
+   ["search"] (index {:topic "search"})))
+
+;{username :username count :count userid :userid :as session} :session
+
 
 ;; ===========================================
 ;; The Server and Main

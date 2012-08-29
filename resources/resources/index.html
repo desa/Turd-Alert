@@ -38,7 +38,7 @@
 	  <div class="container" id="search-login">
 	    <form method="post" action="search">
 	      <input name="search" type="text" class="textinput" id="search-form" 
-		     value="Search for assholes!">
+		    placeholder="Search for assholes!">
 	    </form>
 	    <div class="log-dep" id="login-logout">
 	    </div>
@@ -53,52 +53,7 @@
   </body>
 
   <script>
-    function capitalize (text) {
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-    };
 
-    $(".textinput").click(function () {
-    var type = $(this).attr("name").toLowerCase();
-    var value = $(this).val();
-    var def = ""
-    switch (type) {
-    case "search": 
-    def = "Search for assholes!";
-    break;
-    case "username":
-    def = "Username";
-    break;
-    case "password":
-    def = "Password";
-    break;
-    default:
-    break;
-    }
-    if (value == def) {
-    $(this).val("");
-    }
-    });
-
-    $(".textinput").blur(function () {
-    var type = $(this).attr("name").toLowerCase();
-    var value = "";
-    switch (type) {
-    case "search": 
-    value = "Search for assholes!";
-    break;
-    case "username":
-    value = "Username";
-    break;
-    case "password":
-    value = "Password";
-    break;
-    default:
-    break;
-    }
-    if ($(this).val() == "") {
-    $(this).val(value);
-    }
-    });
   </script>
 
 </html>
