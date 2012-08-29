@@ -100,7 +100,7 @@
 (defn -main [port]
   (serve-app main-app port))
 
-
+(defonce *server* (serve-app main-app))
 
 ;; ===========================================
 ;; Helper Functions
