@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link href="/resources/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/resources/jquery.js"></script>
+    <title>home page</title>
+  </head>
+
+  <body>
+    <div id="page-wrapper">
+      <div class="header" id="homepage-header">
+	<div class="logo" id="logo1"></div>
+	<h1 class="heading" id="name">Turd Alert</h1>
+	<p class="button" id="submit-button"><a href="#">Submit a Story</a></p>
+	<div class="log-dep" id="reg-settings"></div>
+      </div>
+      <div class="content"> 
+	<div class="container" id="left-column">      
+	  <div class="container" id="topics-container">
+	    <ui class="nav" id="topics">
+	      <li id="topics_1">topics</li>
+	    </ui>
+	  </div>
+	  <div class="add-spot" id="left-adds">
+	    <div class="add" id="add-left-1"></div>
+	    <div class="add" id="add-left-2"></div>
+	    <div class="add" id="add-left-3"></div>
+	  </div>
+	</div>
+	<div class="container" id="middle-column">
+	  <div class="section-label" id="topic-name">Topic</div>
+	  <ui class="entry-list" id="entry">
+	    entry
+	  </ui>
+	</div>
+	<div class="container" id="right-column">
+	  <div class="container" id="search-login">
+	    <form method="post" action="#">
+	      <input name="search" type="text" class="textinput" id="search-form" 
+		     value="Search for assholes!">
+	    </form>
+	    <div class="log-dep" id="login-logout">
+	    </div>
+	  </div>
+	  <div class="add-spot" id="right-adds">
+	    <div class="add" id="add-right-1"></div>
+	    <div class="add" id="add-right-2"></div>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function capitalize (text) {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    };
+
+    $(".textinput").click(function () {
+    var type = $(this).attr("name").toLowerCase();
+    var value = $(this).val();
+    var def = ""
+    switch (type) {
+    case "search": 
+    def = "Search for assholes!";
+    break;
+    case "username":
+    def = "Username";
+    break;
+    case "password":
+    def = "Password";
+    break;
+    default:
+    break;
+    }
+    if (value == def) {
+    $(this).val("");
+    }
+    });
+
+    $(".textinput").blur(function () {
+    var type = $(this).attr("name").toLowerCase();
+    var value = "";
+    switch (type) {
+    case "search": 
+    value = "Search for assholes!";
+    break;
+    case "username":
+    value = "Username";
+    break;
+    case "password":
+    value = "Password";
+    break;
+    default:
+    break;
+    }
+    if ($(this).val() == "") {
+    $(this).val(value);
+    }
+    });
+  </script>
+
+</html>
