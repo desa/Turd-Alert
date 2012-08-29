@@ -14,7 +14,7 @@
   (up [] (create turdDB
       	   (table :users (integer :id :primary-key)
 	     (varchar :username 100 :unique)
-	     (varchar :password 255 :not-null)
+	     (varchar :password 100 :not-null)
 	     (varchar :email 255))))
   (down [] (drop (table :users))))
 
@@ -23,8 +23,6 @@
   (up [] (create turdDB
            (table :posts (integer :id :primary-key)
 	     (varchar :title 250)
-	     (varchar :location 255)
-	     (integer :votes)
 	     (text :content)
 	     (timestamp :created (default (now)))
 	     (integer :user [:refer :users :id] :not-null))))
