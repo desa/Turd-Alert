@@ -120,7 +120,7 @@ the id of the node argument into the content of the node."
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics] (make-list (map add-link (get-topics topic page)))
-  [:#entry] (make-list (get-entries topic))
+  [:#entry] (make-list (map format-entry (get-entries topic)))
   [:.add] #((content (get-add (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (not-logged-in-deps)))
 

@@ -45,7 +45,7 @@
 ;; the app provided
 ;; ===========================================
 
-(defn app* [app & {:keys [port] :or {port 8080}}]
+(defn app* [app & {:keys [port] :or {port 8880}}]
   (let [nses (if-let [m (meta app)]
                [(-> (:ns (meta app)) str symbol)]
                [])]
@@ -70,8 +70,8 @@
 
 (defn index [{:keys [topic page]}]
   (fn [req]
-    (if-let [sess (:session req)]
-      (render-to-response (logged-in {:session sess :topic topic :page page}))
+    (if (get-in req [:session :userid])
+      (render-to-response (logged-in {:session (:session req) :topic topic :page page}))
       (render-to-response (not-logged-in {:topic topic :page page})))))
 
 (def routes
@@ -103,8 +103,6 @@
 
 (defn -main [port]
   (serve-app main-app port))
-
-(defonce *server* (serve-app main-app))
 
 ;; ===========================================
 ;; Helper Functions
