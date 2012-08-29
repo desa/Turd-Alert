@@ -3,14 +3,14 @@
    (:use [turdAlert.homepage :only [logged-in not-logged-in]]
          [ net.cgrand.moustache :only [app]]
          [ring.adapter.jetty :only [run-jetty]]
-        [ring.util.response :only [response file-response]]
+        [ring.util.response :only [response file-response redirect-after-post]]
         [ring.middleware.reload :only [wrap-reload]]
         [ring.middleware.file :only [wrap-file]]
         [ring.middleware.stacktrace :only [wrap-stacktrace]]
         [ring.middleware.session :only [wrap-session]]
         [ring.middleware.cookies :only [wrap-cookies]]
         [ring.middleware.params :only [wrap-params]]
-        [ring.middleware.session.store :only [delete-session write-session read-session]]))
+        [ring.middleware.session.cookie]))
 
 
 
@@ -38,7 +38,7 @@
    {:root *webdir*
     :html-files? true}))
 
-(defn user? [u] true)
+(defn user? [u t] u)
 
 ;; ===========================================
 ;; The Server: calling serve-app runs Jetty with
@@ -51,9 +51,7 @@
                [])]
     (run-jetty
      (-> app
-         (wrap-file *webdir*)
-         (wrap-session {:cookie-name "Turd Alert"})
-         (wrap-cookies)
+         (wrap-session)
          (wrap-params)
          (wrap-reload nses)
          (wrap-stacktrace))
@@ -75,19 +73,25 @@
 
 (def routes
   (app
-   [] (index {})
-   ["topic" topic]  (index {:topic topic :page 1})
-   ["topic" topic "page=" page] (index {:topic topic :page page})
-   [&]   page-not-found))
-
-(defn sign-in [{{username "username"  password "password" :as params} :params :as req}]
+   (wrap-file *webdir*)
+   (app
+    [] (index {})
+    ["topic" topic]  (index {:topic topic :page 1})
+    ["topic" topic "page=" page] (index {:topic topic :page page})
+    ["search"] (index {:topic "search"})
+    [&]   page-not-found)))
+  
+(defn sign-in [username password]
   (if-let [userid (user? username password)]
-    (index (assoc req :session {:username username :count 0 :userid userid}))))
+    (fn [req] ((index {:topic "Top Turds"})
+               (assoc req :session {:username username :count 0 :userid userid})))
+    (fn [req] (index {}))))
 
 (def post-handler
   (app
-   ["sign-in"] #(sign-in %)
-   ["search"] (index {:topic "search"})))
+   (fn [req]
+     (if-let [{username "username" password "password"} (:params req)]
+     ((sign-in username password) req)))))
 
 ;{username :username count :count userid :userid :as session} :session
 
