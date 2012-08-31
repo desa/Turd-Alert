@@ -38,7 +38,6 @@
    {:root *webdir*
     :html-files? true}))
 
-(defn user? [u t] true)
 
 ;; ===========================================
 ;; The Server: calling serve-app runs Jetty with
@@ -78,44 +77,59 @@
 (def routes
   (app
    (wrap-file *webdir*)
-   ;(wrap-session {:cookie-name "session" :store (cookie-store)})
    (app
     [] (index {})
     ["topic" topic]  (index {:topic topic :page 1})
     ["topic" topic "page=" page] (index {:topic topic :page page})
     ["search"] (index {:topic "search"})
+    ["reset"] (index {:topic "Reset Password"})
+    ["usr" "usernametaken"] (index {:topic "usernametaken"})
+    ["usr" username] (index {:topic "settings"})
     [&]   page-not-found)))
 
-(defn sign-in [username password]
-  (if [user? username password]
-    (fn [req] ((index {})
-               (assoc (redirect "/") :session {:username username :count 0 :userid "userid"})))
-    (fn [req] (index {}))))
 
-
-(defn make-new-report [r s c r] identity)
-(defn new-user [e u p p2] identity)
+(defn user? [u t] true)
+(defn make-new-post ([u n c s c] "")
+  ([n c s c] ""))
+(defn make-new-user [e u p] (str u))
 (defn reset-password [u] identity)
 
+(defn sign-in [username password]
+  (if (user? username password)
+    (fn [req] (assoc (redirect "/") :session {:username username :userid "userid"}))
+    (fn [req] (dissoc (redirect "/") :session))))
+
+(defn new-report [nick city state content]
+  (fn [req]
+    (if-let [user (get-in req [:session :username])]
+      (redirect (str "/" (make-new-post user nick city state content)))
+      (redirect (str "/" (make-new-post nick city state content))))))
+
+(defn new-user [email username password password2]
+  (fn [req]
+    (redirect (str "/usr/" (make-new-user email username password)))))
+
+(defn reset-password [u] (redirect "/reset"))
+
+      
 (defn log-out [req] ((index {:topic "Top Turds"}) (assoc req :session nil)))
+
 
 (def post-handler
   (app
-  ; (wrap-session)
-   ;(wrap-params)
    (fn [req]
      (let [params (:params req)]
        (cond
         (get params "username")
              ((sign-in (get params "username") (get params "password")) req)
         (get params "report")
-        ((apply make-new-report
+        ((apply new-report
                 (map #(get params %)
                      ["reporter" "state" "city" "new-report"])) req)
-        (get params "email")
+        (get params "new-username")
         ((apply new-user
                 (map #(get params %)
-                     ["email" "new-username" "new-password" "new-password2"])))
+                     ["email" "new-username" "new-password" "new-password2"])) req)
         (get params "logout") (log-out req)
         (get params "forgot-user")
         ((reset-password (get params "forgot-user")) req)

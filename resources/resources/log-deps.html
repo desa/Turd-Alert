@@ -44,7 +44,7 @@
     <div class="not-logged-in" id="register-block">
       <div id="reg-container">
       <div id="registration-form">
-      <form>
+      <form method="post">
 	<div href="#" class="flat-cancel-button" id="cancel-button">
 	  <span>Cancel</span>
 	</div>
@@ -61,6 +61,7 @@
 	<p class="textarea" id="retype-password-label">Retype Password</p>
 	<input type="password" value="" class="textinput" 
 	       id="retype-password-input" name="new-password2">
+	<p id="passwords-not-equal">Your passwords do not match</p>
 	<input type="submit" value="Register" 
 	       class="register-submit" id="register-submit-button">
       </form>
@@ -68,7 +69,26 @@
       </div>
     </div>
 
+<div class="not-logged-in" id="forgot-password-form">
+  <form>
+  	<div href="#" class="flat-cancel-button" id="cancel-button">
+	  <span>Cancel</span>
+	</div>
+	<p class="textarea" id="username-label">User Name</p>
+	<input type="text" value="" class="textinput" 
+	       id="username-input" name="new-username">
+	<input type="submit" value="Register" 
+	       class="register-submit" id="register-submit-button">
+  </form>
+</div>
+
 <script class="not-logged-in" id="reg-script">
+$("#retype-password-input").blur(function () {
+if ((this).val() != ("#password-input").val()) {
+$("#passwords-not-equal").fadeIn("fast");
+};
+})
+
 
 
 $("#register-button").click(function () {

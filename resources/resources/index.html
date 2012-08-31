@@ -32,23 +32,27 @@
 	<div class="container" id="middle-column">
 	  <div class="section-label" id="topic-name">Topic</div>
 
-	  <form id="submit-form">
-	    <div id="cancel-submit"></div>
+	  <form class="submit" id="submit-form"  method="post">
+	    <div class="cancel-submit"></div>
 	    <div id="report-title">Report a Turd</div>
-	    <input type="text" placeholder="Reporter" 
+	    <input type="text" placeholder="Reporter" name="reporter"
 		   class="textinput" id="reporter-input">
-	    <input type="text" placeholder="State" 
+	    <input type="text" placeholder="State" name="state"
 		   class="textinput" id="state-input">
-	    <input type="text" placeholder="Title" class="textinput" 
+	    <input type="text" placeholder="Title" class="textinput"
 		   id="title-input">
-	    <input type="text" placeholder="City" 
+	    <input type="text" placeholder="City" name="city"
 		   class="textinput" id="city-input">
 	    <div id="at-label">at:</div>
-	    <textarea class="textarea" id="content-input" 
+	    <textarea class="textarea" id="content-input" name="report"
 		      placeholder="Report"></textarea>
-	    <input type="submit" class="basic-ok-button" 
+	    <input type="submit" class="basic-ok-button" id="submit-turd"
 		   id="submit-turd" value="Submit">
 	  </form>
+	  <div class="submit" id="submit-complete">
+	    <p>Thanks! Your turd has been reported</p>
+	    <div class="cancel-submit"></div>
+	  </div>
 
 
 	  <ui class="entry-list" id="entry">
@@ -84,11 +88,15 @@
 $("#submit-button").click(function () {
 $("#submit-form").fadeIn("fast");
 });
-$("#cancel-submit").click(function () {
-$("#submit-form").fadeOut("fast");
+$(".cancel-submit").click(function () {
+$(".submit").fadeOut("fast");
+$("#submit-complete").fadeOut("fast");
 $(".textinput").val("");
 });
-
+$("#submit-turd").click(function () {
+$("#submit-form").fadeOut("fast");
+$("#submit-complete").fadeIn("fast");
+})
 </script>
 
 </html>
