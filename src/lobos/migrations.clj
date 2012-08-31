@@ -12,7 +12,8 @@
 ;;; Adding users to the database
 (defmigration add-users-table
   (up [] (create turdDB
-      	   (table :users (integer :id :primary-key)
+      	   (table :users
+	     (integer :id :primary-key)
 	     (varchar :username 100 :unique)
 	     (varchar :password 255 :not-null)
 	     (varchar :email 255))))
@@ -22,8 +23,10 @@
 (defmigration add-posts-table
   (up [] (create turdDB
            (table :posts (integer :id :primary-key)
+	     (varchar :nickname 100)
 	     (varchar :title 250)
-	     (varchar :location 255)
+	     (varchar :city 100)
+	     (varchar :state 100)
 	     (integer :votes)
 	     (text :content)
 	     (timestamp :created (default (now)))
