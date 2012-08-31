@@ -106,7 +106,6 @@ the id of the node argument into the content of the node."
 
 (defsnippet not-logged-in-deps "resources/log-deps.html" [:.not-logged-in]
   []
-  [:#register-button] (set-attr :onClick (open-reg-form))
   [:#sign-in-form] (set-attr :action "")
   [:#password-form] #((set-attr :onBlur (passwordFormat? (get-in % [:attrs :value]))) %)
   [:#forgot-password-button] (set-attr :action ""))

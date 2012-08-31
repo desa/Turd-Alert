@@ -15,8 +15,8 @@
     <form method="post" class="logged-in" id="logout-form">
       <div class="signform-welcome">
 	<div class="forgot-welcome" id="welcome-message">Welcome <span id="user">User</span>!</div>
-	<input class="hidden-input" type="hidden" value="userinfo">
-	<input type="submit" value="Log out" class="log-button" id="logout-button">
+	<input class="hidden-input" type="hidden" value="userinfo" >
+	<input   type="submit" value="Log out" class="log-button" id="logout-button" name="logout">
       </div>
     </form>
   </div>
@@ -40,6 +40,45 @@
       </div>
     </form>
   </div>
+
+    <div class="not-logged-in" id="register-block">
+      <div id="reg-container">
+      <div id="registration-form">
+      <form>
+	<div href="#" class="flat-cancel-button" id="cancel-button">
+	  <span>Cancel</span>
+	</div>
+	<p class="textarea" id="form-label">Turd Alert</p>
+	<p class="textarea" id="email-label">Email</p>
+	<input type="text" value="" class="textinput" 
+	       id="email-input" name="email">
+	<p class="textarea" id="username-label">User Name</p>
+	<input type="text" value="" class="textinput" 
+	       id="username-input" name="new-username">
+	<p class="textarea" id="password-label">Password</p>
+	<input type="password" value="" class="textinput" 
+	       id="password-input" name="new-password">
+	<p class="textarea" id="retype-password-label">Retype Password</p>
+	<input type="password" value="" class="textinput" 
+	       id="retype-password-input" name="new-password2">
+	<input type="submit" value="Register" 
+	       class="register-submit" id="register-submit-button">
+      </form>
+      </div>
+      </div>
+    </div>
+
+<script class="not-logged-in" id="reg-script">
+
+
+$("#register-button").click(function () {
+$("#register-block").fadeIn("fast");
+});
+$("#cancel-button").click(function () {
+$("#register-block").fadeOut("fast");
+$(".text-input").val("");
+});
+</script>
 
   
 	  
