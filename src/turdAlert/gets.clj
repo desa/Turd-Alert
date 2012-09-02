@@ -5,6 +5,22 @@
 
 (defn encrypt-pw [pw] 1000)
 
+(defn date-format [date]
+  (let [temp (clojure.string/split date #"\s")
+        day (temp 0)
+        time (temp 1)]
+    (str (day-format day) " " (time-format time))))
+
+(defn day-format [day]
+  (let [dray (clojure.string/split day #"\W")
+        dmonth (dray 1)
+        dday   (dray 2)
+        dyear  (dray 0)]
+    (str dmonth "/" dday "/" dyear)))
+
+(defn time-format [time]
+  (subs time 0 5))
+
 (defn get-user [username password]
       (let [digest (encrypt-pw password)
             usrs (select users (fields :id :password) (where {:username username}))
