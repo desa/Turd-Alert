@@ -14,9 +14,11 @@
   <div class="logged-in" id="login-logout">
     <form method="post" class="logged-in" id="logout-form">
       <div class="signform-welcome">
-	<div class="forgot-welcome" id="welcome-message">Welcome <span id="user">User</span>!</div>
+	<div class="forgot-welcome" id="welcome-message">
+	  Welcome <span id="user">User</span>!</div>
 	<input class="hidden-input" type="hidden" value="userinfo" >
-	<input   type="submit" value="Log out" class="log-button" id="logout-button" name="logout">
+	<input   type="submit" value="Log out" class="log-button" 
+		 id="logout-button" name="logout">
       </div>
     </form>
   </div>
@@ -39,8 +41,20 @@
 	<input type="submit" value="Log in" class="log-button" id="login-button">
       </div>
     </form>
+  <div id="forgot-password-form">
+    <form method="post">
+      <div class="flat-cancel-button" id="cancel-forgot-button">
+      </div>
+      
+      <h1 class="heading" id="forgot-label">Forgot Password?</h1>
+      <input type="text" placeholder="Username" class="textinput" 
+	     id="forgot-username" name="forgot-username">
+      <input type="submit" placeholder="Submit" 
+	     class="register-submit" id="forgot-submit">
+    </form>
   </div>
-
+</div>
+  </div>
     <div class="not-logged-in" id="register-block">
       <div id="reg-container">
       <div id="registration-form">
@@ -53,6 +67,7 @@
 	<input type="text" value="" class="textinput" 
 	       id="email-input" name="email">
 	<p class="textarea" id="username-label">User Name</p>
+	<p id="username-taken">That username is already taken.</p>
 	<input type="text" value="" class="textinput" 
 	       id="username-input" name="new-username">
 	<p class="textarea" id="password-label">Password</p>
@@ -69,25 +84,22 @@
       </div>
     </div>
 
-<div class="not-logged-in" id="forgot-password-form">
-  <form>
-  	<div href="#" class="flat-cancel-button" id="cancel-button">
-	  <span>Cancel</span>
-	</div>
-	<p class="textarea" id="username-label">User Name</p>
-	<input type="text" value="" class="textinput" 
-	       id="username-input" name="new-username">
-	<input type="submit" value="Register" 
-	       class="register-submit" id="register-submit-button">
-  </form>
-</div>
+
+
 
 <script class="not-logged-in" id="reg-script">
 $("#retype-password-input").blur(function () {
 if ((this).val() != ("#password-input").val()) {
 $("#passwords-not-equal").fadeIn("fast");
 };
-})
+});
+$("#cancel-forgot-button").click(function () {
+$("#forgot-password-form").fadeOut("fast");
+});
+$("#forgot-password-button").click(function () {
+$("#forgot-password-form").fadeIn("fast");
+});
+
 
 
 

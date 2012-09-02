@@ -1,7 +1,9 @@
 (ns turdAlert.core
    (:require [net.cgrand.enlive-html :as html])
-   (:use [turdAlert.homepage :only [logged-in not-logged-in]]
-         [ net.cgrand.moustache :only [app]]
+   (:use [turdAlert.homepage :only [logged-in not-logged-in
+                                    passwords-not-equal username-taken
+                                    forgot-password]]
+         [ net.cgrand.moustache :only [app pass]]
          [ring.adapter.jetty :only [run-jetty]]
         [ring.util.response :only [response file-response redirect-after-post redirect]]
         [ring.middleware.reload :only [wrap-reload]]
@@ -78,16 +80,29 @@
   (app
    (wrap-file *webdir*)
    (app
-    [] (index {})
+    [] (index {:topic "New Turds"})
     ["topic" topic]  (index {:topic topic :page 1})
     ["topic" topic "page=" page] (index {:topic topic :page page})
     ["search"] (index {:topic "search"})
-    ["reset"] (index {:topic "Reset Password"})
-    ["usr" "usernametaken"] (index {:topic "usernametaken"})
-    ["usr" username] (index {:topic "settings"})
+    ["usr" &]  (app
+              ["usernametaken"] (redirect "/register/u")
+              [username "p"] (index {:topic "settings/p"})
+              [username "r"] (index {:topic "settings/r"})
+              [username] (index {:topic "settings"})
+              [&] pass)
+    ["register" "p"] (fn [req] (render-to-response (passwords-not-equal)))
+    ["register" "u"] (fn [req] (render-to-response (username-taken)))
+    ["about"] (index {:topic "about"})
+    ["contact"] (index {:topic "contact"})
+    ["reset"] (fn [req] (render-to-response (forgot-password)))
     [&]   page-not-found)))
 
 
+  
+;    ["usr" "usernametaken"] (redirect "/register/u")
+;    ["usr" username] (index {:topic "settings"})
+
+  
 (defn user? [u t] true)
 (defn make-new-post ([u n c s c] "")
   ([n c s c] ""))
@@ -107,12 +122,27 @@
 
 (defn new-user [email username password password2]
   (fn [req]
-    (redirect (str "/usr/" (make-new-user email username password)))))
+    (if (= password password2)
+      (assoc (redirect (str "/usr/" (make-new-user email username password)))
+        :session {:username username :userid (user? username password)})
+      (redirect "/register/p"))))
 
-(defn reset-password [u] (redirect "/reset"))
-
+(defn reset-password [u] "/reset")
       
-(defn log-out [req] ((index {:topic "Top Turds"}) (assoc req :session nil)))
+(defn log-out [req]  (assoc (redirect "/") :session nil))
+
+(defn forgot [username]
+  (fn [req] (redirect "/reset")))
+
+(defn change-p [u newp])
+
+(defn change-password [oldp newp newp2 username]
+  (if (user? username oldp)
+    (if (= newp newp2)
+      (fn [req] (do (change-p username newp)
+                    (redirect (str "/usr/" username))))
+      (fn [req] (redirect (str "/usr/" username "p"))))
+    (fn [req] (redirect (str "/usr/" username "r")))))
 
 
 (def post-handler
@@ -131,8 +161,13 @@
                 (map #(get params %)
                      ["email" "new-username" "new-password" "new-password2"])) req)
         (get params "logout") (log-out req)
-        (get params "forgot-user")
-        ((reset-password (get params "forgot-user")) req)
+        (get params "forgot-username")
+        ((forgot (get params "forgot-username")) req)
+        (get params "old-password")
+        ((apply change-password
+                (map #(get params %)
+                     ["old-pasword" "new-password"
+                      "new-password2" (get-in req [:session :username])])) req)
         :else page-not-found)))))
 
 
