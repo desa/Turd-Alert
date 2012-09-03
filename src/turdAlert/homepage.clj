@@ -58,12 +58,16 @@ the id of the node argument into the content of the node."
   (fn [nd]
     (let [{ {id :id} :attrs, cont :content, :as node} nd]
       ((content  (get-in (first (select src [(id= id)])) [:content])) node))))
-
+                                     
 (def about-blurb
   "This is the about blurb")
+
 (def contact-blurb
   ["Contact: " (add-link {:href "mailto:webmaster@turdalert.com"
                           :link "webmaster@turdalert.com"})])
+(def contact-about
+  ((wrap :div {:id "contact-about"}) [((wrap :p {:id "about-blurb"}) about-blurb)
+                                      ((wrap :div {:id "contact-blurb"}) contact-blurb)]))
 ;; ============================================
 ;; Functions to get certain data or check data.
 ;; ============================================
@@ -140,8 +144,8 @@ the id of the node argument into the content of the node."
   [:#topic-name] (content topic)
   [:#topics] (make-list (map add-link (get-topics topic page)))
   [:#entry] (cond
-             (= topic "about") (content about-blurb)
-             (= topic "contact") (content contact-blurb)
+             (= topic "about") (content contact-about)
+             (= topic "contact") (content contact-about)
              :else (make-list (map format-entry (get-posts topic page))))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (not-logged-in-deps)))
@@ -155,8 +159,8 @@ the id of the node argument into the content of the node."
              (= topic "settings") (content (settings (:username session) 0))
              (= topic "settings/p") (content (settings (:username session) 1))
              (= topic "settings/r") (content (settings (:username session) 2))
-             (= topic "about") (content about-blurb)
-             (= topic "contact") (content contact-blurb)
+             (= topic "about") (content contact-about)
+             (= topic "contact") (content contact-about)
              :else (make-list (map format-entry (get-posts topic page))))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (logged-in-deps (:username session))))
@@ -167,8 +171,13 @@ the id of the node argument into the content of the node."
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
-  [:.head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"]))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
+  [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
+                  ((wrap :style {:type "text/css"}) ["#passwords-not-equal {display:block;}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))
+
+
+                                                     
 
 (deftemplate username-taken "resources/index.html"
   []
@@ -176,7 +185,9 @@ the id of the node argument into the content of the node."
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
-  [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"]))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
+  [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
+                  ((wrap :style {:type "text/css"}) ["#username-taken {display:block;}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))
 
 (deftemplate forgot-password "resources/index.html"
@@ -184,6 +195,7 @@ the id of the node argument into the content of the node."
   [:title] (content "Turd Alert")
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:head] (append ((wrap :style {:type "text/css"}) ["#password-reset {display:block}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))

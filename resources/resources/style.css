@@ -90,6 +90,8 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 #submit-button:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9); 
+    text-decoration:underline;
 }
 .reg-settings-button {
     width: 50px;
@@ -105,13 +107,15 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 .reg-settings-button:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9);
+    text-decoration:underline;
 }
 .content {
     margin:0px 10px;
     width:940px;
     left:0px;
     padding:0px 0px 10px 0px;
-overflow:hidden;
+    overflow:hidden;
 }
 #left-column {
     margin:5px;
@@ -123,7 +127,6 @@ overflow:hidden;
     background: #fbfbfb;
     border: 1px solid #f0f0f0;
     width: 75px;
-    height: 220px;
     border-radius: 3px;
     display:block;
     margin-top:10px;
@@ -326,6 +329,8 @@ overflow:hidden;
 }
 #forgot-password-button:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9);
+    text-decoration:underline;
 }
 .log-button {
     width: 60px;
@@ -346,6 +351,8 @@ overflow:hidden;
 }
 .log-button:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9);
+    text-decoration:underline;
 }
 #add-right-1 {
     display:block;
@@ -365,7 +372,6 @@ overflow:hidden;
     margin:5px;
     width:263px;
 }
-
 #register-block {
     width:100%;
     height:300%;
@@ -374,21 +380,6 @@ overflow:hidden;
     left:0px;
     display:none;
 }
-
-#registration-form {
-   display:block;
-  background: #ffffff;
-  border: none;
-  width: 672px;
-  height: 488px;
-  border-radius: 5px;
-  -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
-  -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
-  -o-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
-  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
-  margin:auto;
-position:relative;
-}
 #reg-container {
     position:relative;
     width:100%;
@@ -396,192 +387,90 @@ position:relative;
     padding:60px;
     background: rgba(89, 89, 89, 0.85);
 }
-.flat-cancel-button {
-  width: 100px;
-  height: 28px;
-  border-radius: 14px;
-  color: rgb(102, 102, 102);
-  font-family:'Helvetica Neue';
-  font-size: 10pt;
-  font-weight: normal;
-  text-decoration: none;
-  display: table;
-  background-color: rgb(235, 235, 235);
-  float: none;
-  border: none;
-  font-style: normal;
-  position: absolute;
-  top: 34px;
-  left: 532px;
+#registration-form {
+    display:block;
+    background: #ffffff;
+    border: none;
+    width: 560px;
+    height: 350px;
+    border-radius: 5px;
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
+    -o-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.7), 0px 1px 2px 0px #000000;
+    margin:auto;
+    position:relative;
 }
-.flat-cancel-button span {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  text-shadow: none;
+#cancel-reg {
+    float:right;
+    width:20px;
+    height:20px;
+    background:#CCCCCC;
+    margin-top:-30px;
 }
-.flat-cancel-button:hover {
+#cancel-reg:hover {
     cursor:pointer;
 }
-#form-label {
-  color: #000000;
-  font-family:"Arial";
-  font-size: 12pt;
-  font-weight: normal;
-  font-style: normal;
-  text-align: left;
-  line-height: 1.2;
-  width: 73px;
-  position: absolute;
-  top: 56px;
-  left: 57px;
-  margin: 0;
+#reg-header {
+    width:540px;
+    margin:0px 10px 10px 10px;
+    border-bottom:1px solid;
+    padding-top: 40px;
 }
-#email-input {
-  width: 202px;
-  height: 18px;
-  padding: 5px 8px;
-  font-size: 12pt;
-  font-family:'Helvetica Neue';
-  color: rgb(51, 51, 51);
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(207, 207, 207);
-  border-radius: 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -o-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  font-weight: normal;
-  float: none;
-  text-shadow: none;
-  font-style: normal;
-  position: absolute;
-  top: 116px;
-  left: 162px;
-}
-#email-label {
+#main-reg-label {
   color: #000000;
-  font-family:"helvetica neue";
   font-size: 15pt;
   font-weight: normal;
-  font-style: normal;
-  text-align: left;
-  line-height: 1.2;
-  width: 45px;
-  position: absolute;
-  top: 125px;
-  left: 78px;
-  margin: 0;
+  text-align: center;
+  width:540px;
+  margin-bottom: 5px;
 }
-#username-input {
-  width: 202px;
-  height: 18px;
-  padding: 5px 8px;
-  font-size: 12pt;
-  font-family:'Helvetica Neue';
-  color: rgb(51, 51, 51);
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(207, 207, 207);
-  border-radius: 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -o-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  font-weight: normal;
-  float: none;
-  font-style: normal;
-  text-shadow: none;
-  position: absolute;
-  top: 169px;
-  left: 212px;
+.reg-input {
+    width:240px;
+    height:14px;
+    padding: 5px 8px;
+    font-size: 12pt;
+    font-family:'Helvetica Neue';
+    color: rgb(51, 51, 51);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 3px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+    -o-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+    box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
+    margin:10px;
+    float:left;
 }
-#username-label {
-  color: #000000;
-  font-family:"helvetica neue";
-  font-size: 15pt;
-  font-weight: normal;
-  font-style: normal;
-  text-align: left;
-  line-height: 1.2;
-  width: 118px;
-  position: absolute;
-  top: 175px;
-  left: 78px;
-  margin: 0;
+.reg-label {
+    width:250px;
+    margin:10px;
+    text-align:right;
+    font-size:15pt;
+    color: #1e3966;
+    float:left;
 }
-#password-label {
-  color: #000000;
-  font-family:"helvetica neue";
-  font-size: 15pt;
-  font-weight: normal;
-  font-style: normal;
-  text-align: left;
-  line-height: 1.2;
-  width: 118px;
-  position: absolute;
-  top: 226px;
-  left: 81px;
-  margin: 0;
+#username-taken {
+    position:absolute;
+    font-size:10pt;
+    left:280px;
+    top: 120px;
+    color: rgb(145, 3, 9);
+    display:none;
 }
-#password-input {
-  width: 202px;
-  height: 18px;
-  padding: 5px 8px;
-  font-size: 12pt;
-  font-family:'Helvetica Neue';
-  color: rgb(51, 51, 51);
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(207, 207, 207);
-  border-radius: 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -o-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  font-weight: normal;
-  float: none;
-  text-shadow: none;
-  font-style: normal;
-  position: absolute;
-  top: 214px;
-  left: 194px;
-}
-#retype-password-label {
-  color: #000000;
-  font-family:"helvetica neue";
-  font-size: 15pt;
-  font-weight: normal;
-  font-style: normal;
-  text-align: left;
-  line-height: 1.2;
-  width: 189px;
-  position: absolute;
-  top: 274px;
-  left: 81px;
-  margin: 0;
+
+#passwords-not-equal {
+    position:absolute;
+    font-size:10pt;
+    left:280px;
+    top: 167px;
+    color: rgb(145, 3, 9);
+    display:none;
 }
 #retype-password-input {
-  width: 202px;
-  height: 18px;
-  padding: 5px 8px;
-  font-size: 12pt;
-  font-family:'Helvetica Neue';
-  color: rgb(51, 51, 51);
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(207, 207, 207);
-  border-radius: 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  -o-box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  box-shadow: rgba(0, 0, 0, 0.0976563) 0px 1px 8px 0px inset;
-  font-weight: normal;
-  float: none;
-  text-shadow: none;
-  font-style: normal;
-  position: absolute;
-  top: 264px;
-  left: 269px;
+margin-bottom:30px;
 }
-.register-submit {
+#register-submit-button {
   width: 98px;
   height: 28px;
   border-radius: 3px;
@@ -599,12 +488,13 @@ position:relative;
   background-image: -o-linear-gradient(270deg, rgb(235, 235, 235) 0%, rgb(176, 176, 176) 100%);
   background-image: linear-gradient(270deg, rgb(235, 235, 235) 0%, rgb(176, 176, 176) 100%);
   font-style: normal;
-  position: absolute;
-  top: 346px;
-  left: 271px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
 }
 .register-submit:hover {
-    cursor:pointer;
+    cursor: pointer;
+    color:  rgb(145, 3, 9);
 }
 .register-submit span {
   display: table-cell;
@@ -636,6 +526,8 @@ position:relative;
 }
 #cancel-submit:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9);
+    text-decoration:underline;
 }
 #report-title {
   color: #000000;
@@ -800,21 +692,13 @@ position:relative;
 }
 #submit-turd:hover {
     cursor:pointer;
+    color:  rgb(145, 3, 9);
+    text-decoration:underline;
 }
 #submit-complete {
     display:none;
 }
 
-#passwords-not-equal {
-  position: absolute;
-  top: 264px;
-  left: 499px;
-  display:none;
-}
-
-#username-taken {
-    display:none;
-}
 footer li {
 display:inline;
 margin:50px;
@@ -927,4 +811,39 @@ padding:10px;
 .settings-item form input{
 margin:10px;
 }
+#password-reset {
+width:370px;
+height:20px;
+padding:5px;
+border-radius:3px;
+background:#CCCCCC;
+display:none;
+margin-left:250px;
+margin-top:10px;
+}
+#password-reset p {
+float:left;
+}
+#close-password-reset {
+width:10px;
+height:10px;
+background:#000000;
+float: left;
+margin-left:30px;
+margin-top:5px;
+}
 
+#contact-about {
+    width:530px;
+    border-bottom:1px solid #808080;
+    padding:10px;
+    font-size:
+}
+#contact-about p {
+    font-size: 8pt;
+    margin-bottom: 20px;
+}
+#contact-blurb {
+    font-size: 10pt;
+    text-align:right;
+}

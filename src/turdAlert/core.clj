@@ -92,7 +92,7 @@
               [&] pass)
     ["register" "p"] (fn [req] (render-to-response (passwords-not-equal)))
     ["register" "u"] (fn [req] (render-to-response (username-taken)))
-    ["about"] (index {:topic "about"})
+    ["about"] (index {:topic "About"})
     ["contact"] (index {:topic "contact"})
     ["reset"] (fn [req] (render-to-response (forgot-password)))
     [&]   page-not-found)))

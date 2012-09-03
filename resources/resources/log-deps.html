@@ -5,115 +5,108 @@
     <title>Logged in</title>
   </head>
 
-<body>
+  <body>
 
-  <div class="logged-in" id="reg-settings">
-    <a class="reg-settings-button" id="settings-link" href="#">Settings</a>
-  </div>
-
-  <div class="logged-in" id="login-logout">
-    <form method="post" class="logged-in" id="logout-form">
-      <div class="signform-welcome">
-	<div class="forgot-welcome" id="welcome-message">
-	  Welcome <span id="user">User</span>!</div>
-	<input class="hidden-input" type="hidden" value="userinfo" >
-	<input   type="submit" value="Log out" class="log-button" 
-		 id="logout-button" name="logout">
-      </div>
-    </form>
-  </div>
-
-  <div class="not-logged-in" id="reg-settings">
-    <p class="reg-settings-button" id="register-button">Register</p>
-  </div>  
-  <div class="not-logged-in" id="login-logout">
-    <form method="post" action="sign-in" class="not-logged-in" id="sign-in-form">
-      <div class="signform-welcome">
-	<input name="username" type="text" value=""
-	       class="textinput" id="username-form" placeholder="Username">
-	<input name="password" type="password" placeholder="Password" 
-	       class="textinput" id="password-form">
-      </div>
-      <div class="forgot-login">
-	<p class="forgot-welcome" id="forgot-password-button">
-	  Forgot your password?
-	</p>
-	<input type="submit" value="Log in" class="log-button" id="login-button">
-      </div>
-    </form>
-  <div id="forgot-password-form">
-    <form method="post">
-      <div class="flat-cancel-button" id="cancel-forgot-button">
-      </div>
-      
-      <h1 class="heading" id="forgot-label">Forgot Password?</h1>
-      <input type="text" placeholder="Username" class="textinput" 
-	     id="forgot-username" name="forgot-username">
-      <input type="submit" placeholder="Submit" 
-	     class="register-submit" id="forgot-submit">
-    </form>
-  </div>
-</div>
-  </div>
-    <div class="not-logged-in" id="register-block">
-      <div id="reg-container">
-      <div id="registration-form">
-      <form method="post">
-	<div href="#" class="flat-cancel-button" id="cancel-button">
-	  <span>Cancel</span>
-	</div>
-	<p class="textarea" id="form-label">Turd Alert</p>
-	<p class="textarea" id="email-label">Email</p>
-	<input type="text" value="" class="textinput" 
-	       id="email-input" name="email">
-	<p class="textarea" id="username-label">User Name</p>
-	<p id="username-taken">That username is already taken.</p>
-	<input type="text" value="" class="textinput" 
-	       id="username-input" name="new-username">
-	<p class="textarea" id="password-label">Password</p>
-	<input type="password" value="" class="textinput" 
-	       id="password-input" name="new-password">
-	<p class="textarea" id="retype-password-label">Retype Password</p>
-	<input type="password" value="" class="textinput" 
-	       id="retype-password-input" name="new-password2">
-	<p id="passwords-not-equal">Your passwords do not match</p>
-	<input type="submit" value="Register" 
-	       class="register-submit" id="register-submit-button">
-      </form>
-      </div>
-      </div>
+    <div class="logged-in" id="reg-settings">
+      <a class="reg-settings-button" id="settings-link" href="#">Settings</a>
     </div>
 
+    <div class="logged-in" id="login-logout">
+      <form method="post" class="logged-in" id="logout-form">
+	<div class="signform-welcome">
+	  <div class="forgot-welcome" id="welcome-message">
+	    Welcome <span id="user">User</span>!</div>
+	  <input class="hidden-input" type="hidden" value="userinfo" >
+	  <input   type="submit" value="Log out" class="log-button" 
+		   id="logout-button" name="logout">
+	</div>
+      </form>
+    </div>
 
-
-
-<script class="not-logged-in" id="reg-script">
-$("#retype-password-input").blur(function () {
-if ((this).val() != ("#password-input").val()) {
-$("#passwords-not-equal").fadeIn("fast");
-};
-});
-$("#cancel-forgot-button").click(function () {
-$("#forgot-password-form").fadeOut("fast");
-});
-$("#forgot-password-button").click(function () {
-$("#forgot-password-form").fadeIn("fast");
-});
-
-
-
-
-$("#register-button").click(function () {
-$("#register-block").fadeIn("fast");
-});
-$("#cancel-button").click(function () {
-$("#register-block").fadeOut("fast");
-$(".text-input").val("");
-});
-</script>
-
+    <div class="not-logged-in" id="reg-settings">
+      <p class="reg-settings-button" id="register-button">Register</p>
+    </div>
   
+    <div class="not-logged-in" id="login-logout">
+      <form method="post" action="sign-in" class="not-logged-in" id="sign-in-form">
+	<div class="signform-welcome">
+	  <input name="username" type="text" value=""
+		 class="textinput" id="username-form" placeholder="Username">
+	  <input name="password" type="password" placeholder="Password" 
+		 class="textinput" id="password-form">
+	</div>
+	<div class="forgot-login">
+	  <p class="forgot-welcome" id="forgot-password-button">
+	    Forgot your password?
+	  </p>
+	  <input type="submit" value="Log in" class="log-button" id="login-button">
+	</div>
+      </form>
+      <div id="forgot-password-form">
+	<form method="post">
+	  <div class="flat-cancel-button" id="cancel-forgot-button">
+	  </div>
 	  
-</body>
+	  <h1 class="heading" id="forgot-label">Forgot Password?</h1>
+	  <input type="text" placeholder="Username" class="textinput" 
+		 id="forgot-username" name="forgot-username">
+	  <input type="submit" placeholder="Submit" 
+		 class="register-submit" id="forgot-submit">
+	</form>
+      </div>
+    </div>
+    
+    <div class="not-logged-in" id="register-block">
+      <div id="reg-container">
+	<div id="registration-form">
+	  <div id="reg-header"> 
+	    <div href="#" class="flat-cancel-button" id="cancel-reg">
+	    </div>
+	    <p class="textarea" id="main-reg-label">Register for Turd Alert</p>
+	  </div>
+	  
+	  <form method="post" id="reg-form">
+	    <p class="reg-label" id="email-label">Email</p>
+	    <input type="text" value="" class="reg-input" 
+		   id="email-input" name="email">
+	    <p class="reg-label" id="username-label">User Name</p>
+	    <p id="username-taken">That username is already taken.</p>
+	    <input type="text" value="" class="reg-input" 
+		   id="username-input" name="new-username">
+	    <p  class="reg-label" id="password-label">Password</p>
+	    <input type="password" value="" class="reg-input" 
+		   id="password-input" name="new-password">
+	    <p  class="reg-label" id="retype-password-label">Retype Password</p>
+	    <input type="password" value="" class="reg-input" 
+		   id="retype-password-input" name="new-password2">
+	    <p id="passwords-not-equal">Your passwords do not match.</p>
+	    <input type="submit" value="Register" 
+		   class="register-submit" id="register-submit-button">
+	  </form>
+	</div>
+      </div>
+    </div>
+    
+    <script class="not-logged-in" id="reg-script">
+      $("#retype-password-input").blur(function () {
+      if ((this).val() != ("#password-input").val()) {
+      $("#passwords-not-equal").fadeIn("fast");
+      }; });
+      $("#cancel-forgot-button").click(function () {
+      $("#forgot-password-form").fadeOut("fast");
+      });
+      $("#forgot-password-button").click(function () {
+      $("#forgot-password-form").fadeIn("fast");
+      });
+      
+      $("#register-button").click(function () {
+      $("#register-block").fadeIn("fast");
+      });
+      $("#cancel-reg").click(function () {
+      $("#register-block").fadeOut("fast");
+      $(".text-input").val("");
+      });
+    </script>
+  </body>
 
 </html>
