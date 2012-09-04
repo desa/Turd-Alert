@@ -5,18 +5,34 @@
 
 (defn encrypt-pw [pw] 1000)
 
+(defn day-format [day]
+  (let [dray (clojure.string/split day #"\W")
+        dmonth (dray 1)
+        dday   (dray 2)
+        dyear  (dray 0)]
+    (str dmonth "/" dday "/" dyear)))
+
+(defn time-format [time]
+  (subs time 0 5))
+
+(defn date-format [date]
+  (let [temp (clojure.string/split date #"\s")
+        day (temp 0)
+        time (temp 1)]
+    (str (day-format day) " " (time-format time))))
+
 (defn get-user [username password]
       (let [digest (encrypt-pw password)
-            usrs (select users (fields :id :password) (where {:username username}))
-	    usr (usrs 0)]
+            usrs (select users (fields :id :password) (where {:username username}))]
 	(if (= (:password usr) (str digest))
-	  (:id usr)
+	  (let [usr (usrs 0)] (:id usr))
 	  nil))) 
 
 (defn new-user [email username password]
       (let [digest (encrypt-pw password)
       	    id (+ 1 (count (select users)))]
-      	   (insert users (values {:id id, :username username, :password digest, :email email}))))
+	    (try (insert users (values {:id id, :username username, :password digest, :email email}))
+	    	 (catch Exception e (str "caught exception: " (.getMessage e))))))
 
 (defn reset-password [username] nil) ;;sends an email to the users email
 
