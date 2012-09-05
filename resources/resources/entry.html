@@ -27,6 +27,30 @@
 		</div>
 	      </p>
 	  </div>
+
+	  <div id="pagination-links">
+	    <form id="first-form" method="post">
+	      <input id="first" type="hidden" name="page" value="1">
+	      <input id="previous-hidden" type="hidden" name="total" value="l">
+	      <input id="first-button" type="submit"  value="First">
+	    </form>
+	    <form id="previous-form" method="post">
+	      <input id="previous" type="hidden" name="page" value="n-1">
+	      <input id="previous-hidden" type="hidden" name="total" value="l">
+	      <input id="previous-button" type="submit" value="Previous">
+	    </form>
+	    <form id="next-form" method="post">
+	      <input id="next-hidden" type="hidden" name="total" value="l">
+	      <input id="next" type="hidden" name="page" value="n+1">
+	      <input id="next-button" type="submit" value="Next">
+	    </form>
+	    <form id="last-form" method="post">
+	      <input id="last" type="hidden" name="page" value="m">
+	      <input id="previous-hidden" type="hidden" name="total" value="l">
+	      <input id="last-button" type="submit" value="Last">
+	    </form>
+	  </div>
+	    
 	  
 </body>
 

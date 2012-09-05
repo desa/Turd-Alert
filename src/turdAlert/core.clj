@@ -2,7 +2,7 @@
    (:require [net.cgrand.enlive-html :as html])
    (:use [turdAlert.homepage :only [logged-in not-logged-in
                                     passwords-not-equal username-taken
-                                    forgot-password]]
+                                    forgot-password number-posts]]
          [ net.cgrand.moustache :only [app pass]]
          [ring.adapter.jetty :only [run-jetty]]
         [ring.util.response :only [response file-response redirect-after-post redirect]]
@@ -66,23 +66,25 @@
 ;; Routes: the handler for the all the routes
 ;; ===========================================
 
-(defn index [{:keys [topic page]}]
+(defn index [{:keys [topic page total]}]
   (fn [req]
     (if (get-in req [:session :userid])
       (->
-       (render-to-response (logged-in {:session (:session req) :topic topic :page page}))
+       (render-to-response (logged-in {:session (:session req) :topic topic
+                                       :page page :total total}))
        (assoc :session (:session req)))
-      (render-to-response (not-logged-in {:topic topic :page page})))))
-
+      (render-to-response (not-logged-in {:topic topic :page page :total total})))))
 
 
 (def routes
   (app
    (wrap-file *webdir*)
    (app
-    [] (index {:topic "New Turds"})
-    ["topic" topic]  (index {:topic topic :page 1})
-    ["topic" topic "page=" page] (index {:topic topic :page page})
+    [] (index {:topic "New Turds" :page 1 :total (number-posts)})
+    ["topic" topic]  (index {:topic topic :page 1 :total (number-posts)})
+    ["topic" topic "t" total "page" page] (index {:topic topic
+                                                  :page (Integer/parseInt page)
+                                                  :total (Integer/parseInt total)})
     ["search"] (index {:topic "search"})
     ["usr" &]  (app
               ["usernametaken"] (redirect "/register/u")
@@ -94,19 +96,16 @@
     ["register" "u"] (fn [req] (render-to-response (username-taken)))
     ["about"] (index {:topic "About"})
     ["contact"] (index {:topic "contact"})
-    ["reset"] (fn [req] (render-to-response (forgot-password)))
+    ["reset"] (fn [req] (render-to-response (forgot-password))) 
     [&]   page-not-found)))
 
-
-  
-;    ["usr" "usernametaken"] (redirect "/register/u")
-;    ["usr" username] (index {:topic "settings"})
-
-  
 (defn user? [u t] true)
+
 (defn make-new-post ([u n c s c] "")
   ([n c s c] ""))
+
 (defn make-new-user [e u p] (str u))
+
 (defn reset-password [u] identity)
 
 (defn sign-in [username password]
@@ -144,6 +143,12 @@
       (fn [req] (redirect (str "/usr/" username "p"))))
     (fn [req] (redirect (str "/usr/" username "r")))))
 
+(defn new-page [page total]
+  (fn [req]
+    (if (or ( = (:uri req) "") (:uri req) "/")
+      (redirect (str "/topic/New%20Turds" "/t/" total "/page/" page))
+      (redirect (str (subs (get req :uri) 0 18) "/t/" total "/page/" page)))))
+
 
 (def post-handler
   (app
@@ -168,6 +173,8 @@
                 (map #(get params %)
                      ["old-pasword" "new-password"
                       "new-password2" (get-in req [:session :username])])) req)
+        (get params "page")
+        ((new-page (get params "page") (get params "total")) req)
         :else page-not-found)))))
 
 

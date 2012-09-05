@@ -25,7 +25,6 @@
 
 (def topic1 {:href "#" :link "topic"})
 
-
 ;; =============================================
 ;; Helper functions for the templates
 ;; =============================================
@@ -51,7 +50,6 @@
          (cons (content ())
                (map #(add-list-item %) items))))
 
-
 (defn merge-node [src]
   "Returns function that puts the content of nodes from the src nodes that match
 the id of the node argument into the content of the node."
@@ -68,18 +66,31 @@ the id of the node argument into the content of the node."
 (def contact-about
   ((wrap :div {:id "contact-about"}) [((wrap :p {:id "about-blurb"}) about-blurb)
                                       ((wrap :div {:id "contact-blurb"}) contact-blurb)]))
+(def num-per-page 10)
+
 ;; ============================================
 ;; Functions to get certain data or check data.
 ;; ============================================
+(defn recent-turds [a b]
+  [])
+
+(defn top-turds [t n]
+  [])
 
 (defn get-ad [id]
   "take the id and get an add that fits that spot"
   (str "add"))
 
-(defn get-posts [t p]
+(defn get-posts [topic page total]
   "Given topic t, get 10 (or whatever) entries for page p"
   (let [ent test-entry]
-    (repeat 10 ent)))
+    (repeat num-per-page ent)))
+
+(defn get-posts2 [topic page total]
+  (if (= topic "New Turds")
+    (recent-turds (* num-per-page (dec page)) (* num-per-page page))
+    (top-turds (- total (* num-per-page (dec page))) num-per-page)))
+
 
 (defn get-topics [t p]
   "Given topic t, get other topics for page p"
@@ -94,6 +105,9 @@ the id of the node argument into the content of the node."
   "is password s in correct format? If no, put popup to notify them"
   [s] "")
 
+(defn number-posts [] 100)
+
+(def str-number-posts "100")
 
 ;; ============================================
 ;; Snippets
@@ -105,7 +119,7 @@ the id of the node argument into the content of the node."
                    (set-attr :id (format "%s-title" title))
                    (content title))
   [:.entry-text] (content text)
-  [:.entry-infos] (content (map #((wrap :span {:id  (str (rest (str (key %))))
+  [:.entry-infos] (content (map #((wrap :span {:id  (subs (str (key %)) 1)
                                                :class "entry-info"})  (val %))
                                 {:submitted-by (format "from %s" submitted-by)
                                  :date date
@@ -128,30 +142,61 @@ the id of the node argument into the content of the node."
 (defsnippet settings "resources/settings.html" [:.settings]
   [username n]
   [:#usr] (content username)
-  [:#message] (fn [req]
+  [:#message] (fn [node]
                 (cond
-                 (= n 0) ((content (str "Hey " username "!")) req)
-                 (= n 1) ((content "Passwords do not match") req)
-                 (= n 2) ((content "That is not your password!") req))))
+                 (= n 0) ((content (str "Hey " username "!")) node)
+                 (= n 1) ((content "Passwords do not match") node)
+                 (= n 2) ((content "That is not your password!") node))))
+
+
+(defsnippet pagination "resources/entry.html" [:#pagination-links]
+  [page total]
+  [:#first-button]  (fn [node]
+                        (if (= page 1)
+                          ((set-attr :class "display-none") node)
+                          ((set-attr :class "page-button") node)))
+  [:#previous] (set-attr :value (format "%d" (dec page)))
+  [:#previous-button] (fn [node]
+                        (if (= page 1)
+                          ((set-attr :class "display-none") node)
+                          ((set-attr :class "page-button") node)))
+  [:#previous-hidden] (set-attr :value (format "%d" total))
+  [:#next-hidden] (set-attr :value (format "%d" total))
+  [:#next] (set-attr :value (format "%d" (inc page)))
+  [:#next-button] (fn [node]
+                    (if (= page (quot total num-per-page))
+                          ((set-attr :class "display-none") node)
+                          ((set-attr :class "page-button") node)))
+  [:#last] (set-attr :value (format "%d" (quot total num-per-page)))
+  [:#last-button] (fn [node]
+                    (if (= page (quot total num-per-page))
+                          ((set-attr :class "display-none") node)
+                          ((set-attr :class "page-button") node))))
+
   
 ;; ============================================
 ;; Templates
 ;; ============================================
 
 (deftemplate not-logged-in  "resources/index.html"
-  [{:keys [session topic page]  :or {topic "New Turds" page 0}}]
+  [{session :session, topic :topic, page :page, total :total,
+    :or {topic "New Turds" page 1 total (number-posts)}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics] (make-list (map add-link (get-topics topic page)))
   [:#entry] (cond
              (= topic "about") (content contact-about)
              (= topic "contact") (content contact-about)
-             :else (make-list (map format-entry (get-posts topic page))))
+             :else (make-list (map format-entry (get-posts topic page total))))
+  [:#pagination]  (cond
+                   (= topic "Top Turds") (content (pagination page total))
+                   (= topic "New Turds") (content  (pagination page total)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (not-logged-in-deps)))
 
 (deftemplate logged-in  "resources/index.html"
-  [{:keys [session topic page]  :or {topic "New Turds"}}]
+  [{session :session topic :topic page :page total :total
+    :or {topic "New Turds" page 1 total (number-posts)}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics]  (make-list (map add-link (get-topics topic page)))
@@ -161,7 +206,10 @@ the id of the node argument into the content of the node."
              (= topic "settings/r") (content (settings (:username session) 2))
              (= topic "about") (content contact-about)
              (= topic "contact") (content contact-about)
-             :else (make-list (map format-entry (get-posts topic page))))
+             :else (make-list (map format-entry (get-posts topic page total))))
+  [:#pagination] (cond
+                  (= topic "Top Turds") (content (pagination page total))
+                  (= topic "New Turds") (content (pagination page total)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:.log-dep] (merge-node (logged-in-deps (:username session))))
 
@@ -169,15 +217,13 @@ the id of the node argument into the content of the node."
   []
   [:title] (content "Turd Alert")
   [:#topic-name] (content "New Turds")
-  [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
+  [:#topics]  (make-list (map add-link (get-topics "New Turds" 1)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
-  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
+  [:#pagination] (content (pagination 1 (number-posts)))
   [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
                   ((wrap :style {:type "text/css"}) ["#passwords-not-equal {display:block;}"]))
-  [:.log-dep] (merge-node (not-logged-in-deps)))
-
-
-                                                     
+  [:.log-dep] (merge-node (not-logged-in-deps)))                  
 
 (deftemplate username-taken "resources/index.html"
   []
@@ -185,7 +231,8 @@ the id of the node argument into the content of the node."
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
-  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
+  [:#pagination]  (content (pagination 1 (number-posts)))
   [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
                   ((wrap :style {:type "text/css"}) ["#username-taken {display:block;}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))
@@ -195,7 +242,8 @@ the id of the node argument into the content of the node."
   [:title] (content "Turd Alert")
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
-  [:#entry] (make-list (map format-entry (get-posts "New Turds" 0)))
+  [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
+  [:#pagination]  (content (pagination 1 (number-posts)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:head] (append ((wrap :style {:type "text/css"}) ["#password-reset {display:block}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))
