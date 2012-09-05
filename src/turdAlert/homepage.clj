@@ -86,8 +86,12 @@ the id of the node argument into the content of the node."
 
 (defn get-posts [topic page total]
   (if (= topic "New Turds")
-    (reverse (get-recent (+ (- (number-posts) total) (* num-per-page (dec page))) num-per-page))
-    (reverse (get-top (* num-per-page (dec page)) (* num-per-page page)))))
+    (let [offset (+ (- (number-posts) total) (* num-per-page (dec page)))
+          n (min (- (number-posts) offset) num-per-page)]
+      (reverse (get-recent offset n)))
+    (let [a (* num-per-page (dec page))
+          b (min (* num-per-page page) (- total a))]
+          (reverse (get-top a b)))))
 
 
 (defn get-topics [t p]
@@ -113,12 +117,13 @@ the id of the node argument into the content of the node."
     nickname :nickname created :created votes :votes id :id}]
   [:.entry-title] (do->
                    (set-attr :id (format "%s-title" title))
-                   (content (str title id)))
+                   (content title))
   [:.entry-text] (content post-content)
+  [:#up-vote-hidden] (set-attr :value id)
   [:.entry-infos] (content (map #((wrap :span {:id  (subs (str (key %)) 1)
                                                :class "entry-info"})  (val %))
                                 {:submitted-by (format "from %s" nickname)
-                                 :date ""
+                                 :date (date-format created)
                                  :location (format "at %s, %s" city state )
                                  :up-votes (format "%s votes" votes)})))
 
@@ -160,12 +165,12 @@ the id of the node argument into the content of the node."
   [:#next-hidden] (set-attr :value (format "%d" total))
   [:#next] (set-attr :value (format "%d" (inc page)))
   [:#next-button] (fn [node]
-                    (if (>= page (quot total num-per-page))
+                    (if (>= page (inc (quot total num-per-page)))
                           ((set-attr :class "display-none") node)
                           ((set-attr :class "page-button") node)))
-  [:#last] (set-attr :value (format "%d" (quot total num-per-page)))
+  [:#last] (set-attr :value (format "%d" (inc (quot total num-per-page))))
   [:#last-button] (fn [node]
-                    (if (>= page (quot total num-per-page))
+                    (if (>= page (inc (quot total num-per-page)))
                           ((set-attr :class "display-none") node)
                           ((set-attr :class "page-button") node))))
 

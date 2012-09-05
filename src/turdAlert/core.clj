@@ -108,8 +108,6 @@
   ([nick title  city state content]
      (make-new-post 1 nick title city state content)))
 
-(defn reset-password [u] identity)
-
 (defn sign-in [username password]
   (if-let [userid (get-user username password)]
     (fn [req] (assoc (redirect "/") :session {:username username :userid userid}))
@@ -127,13 +125,11 @@
   (fn [req]
     (if (= password password2)
       (if-let [user (new-user email username password)]
-        (assoc (redirect (str "/usr/" user))
+        (assoc (redirect (str "/usr/" username))
           :session {:username username :userid user})
         (redirect "/register/u"))
       (redirect "/register/p"))))
-
-(defn reset-password [u] "/reset")
-      
+ 
 (defn log-out [req]  (assoc (redirect "/") :session nil))
 
 (defn forgot [username]
@@ -144,16 +140,27 @@
 (defn change-password [oldp newp newp2 username userid]
   (if-let [user (get-user username oldp)]
     (if (= newp newp2)
-      (fn [req] (do (change-p username newp)
-                    (redirect (str "/usr/" user))))
-      (fn [req] (redirect (str "/usr/" user "p"))))
-    (fn [req] (redirect (str "/usr/" userid "r")))))
+      (fn [req] (do (reset-password userid newp)
+                    (redirect (str "/usr/" username))))
+      (fn [req] (redirect (str "/usr/" username "/p"))))
+    (fn [req] (redirect (str "/usr/" username "/r")))))
 
 (defn new-page [page total]
   (fn [req]
-    (if (or ( = (:uri req) "") (:uri req) "/")
+    (if (= (:uri req) "/")
       (redirect (str "/topic/New%20Turds" "/t/" total "/page/" page))
       (redirect (str (subs (get req :uri) 0 18) "/t/" total "/page/" page)))))
+
+(defn delete-account [userid]
+  (fn [req]
+    (do
+      (delete-user userid)
+      (log-out req))))
+
+(defn put-up-vote [postid]
+  (fn [req]
+    (do (up-vote postid)
+      (redirect (:uri req)))))
 
 
 (def post-handler
@@ -172,14 +179,16 @@
                 (map #(get params %)
                      ["email" "new-username" "new-password" "new-password2"])) req)
         (get params "logout") (log-out req)
+        (get params "delete-account") ((delete-account (get-in req [:session :userid])) req)
         (get params "forgot-username")
         ((forgot (get params "forgot-username")) req)
         (get params "old-password")
-        ((change-password (get params "old-pasword")
+        ((change-password (get params "old-password")
                           (get params "new-password")
                           (get params "new-password2")
                           (get-in req [:session :username])
                           (get-in req [:session :userid])) req)
+        (get params "up-vote") ((put-up-vote (Integer/parseInt (get params "up-vote"))) req)
         (get params "page")
         ((new-page (get params "page") (get params "total")) req)
         :else page-not-found)))))

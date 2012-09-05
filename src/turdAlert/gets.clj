@@ -17,7 +17,7 @@
   ([salt raw] (BCrypt/hashpw raw salt))
   ([raw] (encrypt (gen-salt) raw)))
 
-(defn compare
+(defn compare-str
   "Compare a raw string with an already encrypted string"
   [raw encrypted]
   (BCrypt/checkpw raw encrypted))
@@ -32,7 +32,11 @@
     (str dmonth "/" dday "/" dyear)))
 
 (defn time-format [time]
-  (subs time 0 5))
+  (let [hrs24 (Integer/parseInt (subs time 0 2))
+        hrs (#(if (= % 0) 12 %) (mod hrs24 12))
+        am-pm  (#(if (>= % 12) "pm" "am") hrs24)
+        mins (subs time 3 5)]
+    (format "%d:%s %s" hrs mins am-pm)))
 
 (defn date-format* [date]
   (let [temp (clojure.string/split date #"\s")
@@ -48,9 +52,9 @@
 	(if (empty? usrs)
 	    nil
 	    (let [usr (usrs 0)]
-	      (if (compare password (:password usr))
+	      (if (compare-str password (:password usr))
 	      	  (let [usr (usrs 0)] (:id usr))
-	      :passworderr)))))
+	      nil)))))
 
 (defn new-user [email username password]
       (let [digest (encrypt password)
