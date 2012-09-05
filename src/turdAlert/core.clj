@@ -1,18 +1,19 @@
 (ns turdAlert.core
    (:require [net.cgrand.enlive-html :as html])
-   (:use [turdAlert.homepage :only [logged-in not-logged-in
+   (:use turdAlert.gets
+         [turdAlert.homepage :only [logged-in not-logged-in
                                     passwords-not-equal username-taken
-                                    forgot-password number-posts]]
+                                    forgot-password]]
          [ net.cgrand.moustache :only [app pass]]
          [ring.adapter.jetty :only [run-jetty]]
-        [ring.util.response :only [response file-response redirect-after-post redirect]]
-        [ring.middleware.reload :only [wrap-reload]]
-        [ring.middleware.file :only [wrap-file]]
-        [ring.middleware.stacktrace :only [wrap-stacktrace]]
-        [ring.middleware.session :only [wrap-session]]
-        [ring.middleware.cookies :only [wrap-cookies]]
-        [ring.middleware.params :only [wrap-params]]
-        [ring.middleware.session.cookie]))
+         [ring.util.response :only [response file-response redirect-after-post redirect]]
+         [ring.middleware.reload :only [wrap-reload]]
+         [ring.middleware.file :only [wrap-file]]
+         [ring.middleware.stacktrace :only [wrap-stacktrace]]
+         [ring.middleware.session :only [wrap-session]]
+         [ring.middleware.cookies :only [wrap-cookies]]
+         [ring.middleware.params :only [wrap-params]]
+         [ring.middleware.session.cookie]))
 
 
 
@@ -101,29 +102,34 @@
 
 (defn user? [u t] true)
 
-(defn make-new-post ([u n c s c] "")
-  ([n c s c] ""))
-
-(defn make-new-user [e u p] (str u))
+(defn make-new-post
+  ([user nick title city state content]
+     (new-post user nick title city state content))
+  ([nick title  city state content]
+     (make-new-post 1 nick title city state content)))
 
 (defn reset-password [u] identity)
 
 (defn sign-in [username password]
-  (if (user? username password)
-    (fn [req] (assoc (redirect "/") :session {:username username :userid "userid"}))
+  (if-let [userid (get-user username password)]
+    (fn [req] (assoc (redirect "/") :session {:username username :userid userid}))
     (fn [req] (dissoc (redirect "/") :session))))
 
-(defn new-report [nick city state content]
+(defn make-new-report [nick title city state content]
   (fn [req]
-    (if-let [user (get-in req [:session :username])]
-      (redirect (str "/" (make-new-post user nick city state content)))
-      (redirect (str "/" (make-new-post nick city state content))))))
+    (if-let [user (get-in req [:session :userid])]
+      (do (make-new-post user nick title city state content)
+          (redirect "/"))
+      (do (make-new-post nick title city state content)
+          (redirect "/")))))
 
-(defn new-user [email username password password2]
+(defn make-new-user [email username password password2]
   (fn [req]
     (if (= password password2)
-      (assoc (redirect (str "/usr/" (make-new-user email username password)))
-        :session {:username username :userid (user? username password)})
+      (if-let [user (new-user email username password)]
+        (assoc (redirect (str "/usr/" user))
+          :session {:username username :userid user})
+        (redirect "/register/u"))
       (redirect "/register/p"))))
 
 (defn reset-password [u] "/reset")
@@ -135,13 +141,13 @@
 
 (defn change-p [u newp])
 
-(defn change-password [oldp newp newp2 username]
-  (if (user? username oldp)
+(defn change-password [oldp newp newp2 username userid]
+  (if-let [user (get-user username oldp)]
     (if (= newp newp2)
       (fn [req] (do (change-p username newp)
-                    (redirect (str "/usr/" username))))
-      (fn [req] (redirect (str "/usr/" username "p"))))
-    (fn [req] (redirect (str "/usr/" username "r")))))
+                    (redirect (str "/usr/" user))))
+      (fn [req] (redirect (str "/usr/" user "p"))))
+    (fn [req] (redirect (str "/usr/" userid "r")))))
 
 (defn new-page [page total]
   (fn [req]
@@ -158,21 +164,22 @@
         (get params "username")
              ((sign-in (get params "username") (get params "password")) req)
         (get params "report")
-        ((apply new-report
+        ((apply make-new-report
                 (map #(get params %)
-                     ["reporter" "state" "city" "new-report"])) req)
+                     ["reporter" "title" "city" "state" "report"])) req)
         (get params "new-username")
-        ((apply new-user
+        ((apply make-new-user
                 (map #(get params %)
                      ["email" "new-username" "new-password" "new-password2"])) req)
         (get params "logout") (log-out req)
         (get params "forgot-username")
         ((forgot (get params "forgot-username")) req)
         (get params "old-password")
-        ((apply change-password
-                (map #(get params %)
-                     ["old-pasword" "new-password"
-                      "new-password2" (get-in req [:session :username])])) req)
+        ((change-password (get params "old-pasword")
+                          (get params "new-password")
+                          (get params "new-password2")
+                          (get-in req [:session :username])
+                          (get-in req [:session :userid])) req)
         (get params "page")
         ((new-page (get params "page") (get params "total")) req)
         :else page-not-found)))))

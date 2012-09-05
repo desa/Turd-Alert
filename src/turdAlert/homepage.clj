@@ -1,14 +1,17 @@
 (ns turdAlert.homepage
-  (:use [net.cgrand.enlive-html
+  (:use [turdAlert.gets :only [number-posts get-top get-recent get-ad new-post new-user date-format]]
+        [net.cgrand.enlive-html
          :only [id= select deftemplate defsnippet content clone-for nth-child snippet* transformation
                 nth-of-type first-child do-> set-attr sniptest at emit* wrap append]]))
+
+
 
 ;; ============================================
 ;; test data
 ;; ============================================
 
 (def test-entry  {:title "title"
-             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+                  :content "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
 		facilisis bibendum fermentum. Donec dolor ante, iaculis at tincidunt ac,
 		dapibus in risus. Donec aliquam consectetur libero, eget dignissim nisl
 		laoreet quis. Suspendisse eget enim nec enim interdum commodo ut facilisis
@@ -17,17 +20,24 @@
 		at sollicitudin id, sollicitudin sit amet libero. Vestibulum cursus tellus
 		eget mauris interdum ac bibendum sapien dictum. In hac habitasse platea
 		dictumst."
-             :submitted-by "anon"
-             :date "8/31/12 at 3:30pm"
-             :location "Los Angeles, CA"
-             :up-votes 12343
-                  :down-votes 31})
+                  :nickname "anon"
+                  :date "8/31/12 at 3:30pm"
+                  :city "Los Angeles"
+                  :state "CA"
+                  :votes 12343})
 
 (def topic1 {:href "#" :link "topic"})
+
+(defn get-posts-test [topic page total]
+  "Given topic t, get 10 (or whatever) entries for page p"
+  (let [ent test-entry]
+    (repeat 10 ent)))
 
 ;; =============================================
 ;; Helper functions for the templates
 ;; =============================================
+
+(defn num-posts [] (number-posts))
 
 (defn add-link [item]
   "puts links around the items of the list items,
@@ -71,25 +81,13 @@ the id of the node argument into the content of the node."
 ;; ============================================
 ;; Functions to get certain data or check data.
 ;; ============================================
-(defn recent-turds [a b]
-  [])
 
-(defn top-turds [t n]
-  [])
 
-(defn get-ad [id]
-  "take the id and get an add that fits that spot"
-  (str "add"))
 
 (defn get-posts [topic page total]
-  "Given topic t, get 10 (or whatever) entries for page p"
-  (let [ent test-entry]
-    (repeat num-per-page ent)))
-
-(defn get-posts2 [topic page total]
   (if (= topic "New Turds")
-    (recent-turds (* num-per-page (dec page)) (* num-per-page page))
-    (top-turds (- total (* num-per-page (dec page))) num-per-page)))
+    (reverse (get-recent (+ (- (number-posts) total) (* num-per-page (dec page))) num-per-page))
+    (reverse (get-top (* num-per-page (dec page)) (* num-per-page page)))))
 
 
 (defn get-topics [t p]
@@ -105,27 +103,25 @@ the id of the node argument into the content of the node."
   "is password s in correct format? If no, put popup to notify them"
   [s] "")
 
-(defn number-posts [] 100)
-
-(def str-number-posts "100")
 
 ;; ============================================
 ;; Snippets
 ;; ============================================
 
 (defsnippet format-entry "resources/entry.html" [:#entry] 
-  [{:keys [title text submitted-by date location up-votes down-votes]}]
+  [{state :state post-content :content title :title city :city
+    nickname :nickname created :created votes :votes id :id}]
   [:.entry-title] (do->
                    (set-attr :id (format "%s-title" title))
-                   (content title))
-  [:.entry-text] (content text)
+                   (content (str title id)))
+  [:.entry-text] (content post-content)
   [:.entry-infos] (content (map #((wrap :span {:id  (subs (str (key %)) 1)
                                                :class "entry-info"})  (val %))
-                                {:submitted-by (format "from %s" submitted-by)
-                                 :date date
-                                 :location (format "at %s" location)
-                                 :up-votes (format "%s up" up-votes)
-                                 :down-votes (format "%s down" down-votes)})))
+                                {:submitted-by (format "from %s" nickname)
+                                 :date ""
+                                 :location (format "at %s, %s" city state )
+                                 :up-votes (format "%s votes" votes)})))
+
 
 (defsnippet logged-in-deps "resources/log-deps.html" [:.logged-in]
   [username]
@@ -164,12 +160,12 @@ the id of the node argument into the content of the node."
   [:#next-hidden] (set-attr :value (format "%d" total))
   [:#next] (set-attr :value (format "%d" (inc page)))
   [:#next-button] (fn [node]
-                    (if (= page (quot total num-per-page))
+                    (if (>= page (quot total num-per-page))
                           ((set-attr :class "display-none") node)
                           ((set-attr :class "page-button") node)))
   [:#last] (set-attr :value (format "%d" (quot total num-per-page)))
   [:#last-button] (fn [node]
-                    (if (= page (quot total num-per-page))
+                    (if (>= page (quot total num-per-page))
                           ((set-attr :class "display-none") node)
                           ((set-attr :class "page-button") node))))
 
@@ -180,7 +176,7 @@ the id of the node argument into the content of the node."
 
 (deftemplate not-logged-in  "resources/index.html"
   [{session :session, topic :topic, page :page, total :total,
-    :or {topic "New Turds" page 1 total (number-posts)}}]
+    :or {topic "New Turds" page 1 total (num-posts)}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics] (make-list (map add-link (get-topics topic page)))
@@ -196,7 +192,7 @@ the id of the node argument into the content of the node."
 
 (deftemplate logged-in  "resources/index.html"
   [{session :session topic :topic page :page total :total
-    :or {topic "New Turds" page 1 total (number-posts)}}]
+    :or {topic "New Turds" page 1 total (num-posts)}}]
   [:title] (content "Turd Alert")
   [:#topic-name] (content topic)
   [:#topics]  (make-list (map add-link (get-topics topic page)))
@@ -220,7 +216,7 @@ the id of the node argument into the content of the node."
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 1)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
-  [:#pagination] (content (pagination 1 (number-posts)))
+  [:#pagination] (content (pagination 1 (num-posts)))
   [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
                   ((wrap :style {:type "text/css"}) ["#passwords-not-equal {display:block;}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))                  
@@ -232,7 +228,7 @@ the id of the node argument into the content of the node."
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
-  [:#pagination]  (content (pagination 1 (number-posts)))
+  [:#pagination]  (content (pagination 1 (num-posts)))
   [:head] (append ((wrap :style {:type "text/css"}) ["#register-block {display:block;}"])
                   ((wrap :style {:type "text/css"}) ["#username-taken {display:block;}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))
@@ -243,7 +239,7 @@ the id of the node argument into the content of the node."
   [:#topic-name] (content "New Turds")
   [:#topics]  (make-list (map add-link (get-topics "New Turds" 0)))
   [:#entry] (make-list (map format-entry (get-posts "New Turds" 1)))
-  [:#pagination]  (content (pagination 1 (number-posts)))
+  [:#pagination]  (content (pagination 1 (num-posts)))
   [:.add] #((content (get-ad (get-in % [:attrs :id]))) %)
   [:head] (append ((wrap :style {:type "text/css"}) ["#password-reset {display:block}"]))
   [:.log-dep] (merge-node (not-logged-in-deps)))

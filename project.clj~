@@ -5,9 +5,7 @@
                  [enlive "1.0.1"]
 		 [postgresql "9.1-901.jdbc4"]
                  [lobos "1.0.0-SNAPSHOT"]
-                 [korma "0.3.0-beta7"]
-		 [org.mindrot/jbcrypt "0.3m"]
-                 ]
+                 [korma "0.3.0-beta7"]]
 
   :plugins [[lein-swank "1.4.4"]])
 		

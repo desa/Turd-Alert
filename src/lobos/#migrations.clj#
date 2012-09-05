@@ -28,7 +28,7 @@
 	     (varchar :city 100)
 	     (varchar :state 100)
 	     (integer :votes)
-	     (text :post-content)
+	     (text :content)
 	     (timestamp :created (default (now)))
 	     (integer :user [:refer :users :id] :not-null))))
   (down [] (drop (table :posts))))
